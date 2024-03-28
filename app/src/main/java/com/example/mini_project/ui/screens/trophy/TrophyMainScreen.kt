@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -34,6 +35,11 @@ fun TrophyScreenPreview (
                 Image(
                     painter = painterResource(id = R.drawable.trophy),
                     contentDescription = toString(),
+                )
+                Text(
+                    text = "Achievement",
+                    modifier = modifier
+                        .padding(start = 20.dp, top = 130.dp)
                 )
             }
         }
