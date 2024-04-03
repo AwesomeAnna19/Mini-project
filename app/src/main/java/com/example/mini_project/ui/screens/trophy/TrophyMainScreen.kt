@@ -1,5 +1,11 @@
 package com.example.mini_project.ui.screens.trophy
 
+import android.content.Context
+import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -16,6 +22,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getSystemService
 import com.example.mini_project.R
 
 @Preview(showSystemUi = true)
@@ -60,8 +67,15 @@ fun TrophyLazyGrid (
     }
 }
 
-fun PopUpWindowAchievementDetails(
+/*Dén her code snippet nedenunder er til popup window - den er ikke færdig endnu*/
+private fun PopUpWindowAchievementDetails() {
+    val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    val popupView = inflater.inflate(R.layout.mainpopup, null)
 
-) {
-    PopupWindow()
+    val width = ViewGroup.LayoutParams.MATCH_PARENT
+    val height = ViewGroup.LayoutParams.WRAP_CONTENT
+    val focusable: Boolean = true
+    val popupWindow = PopupWindow(popupView,width,height,focusable)
+
+    popupWindow.showAtLocation(layout,Gravity.BOTTOM,0,0)
 }
