@@ -1,7 +1,5 @@
 package com.example.mini_project.ui.screens.trophy
 
-import android.content.Context
-import android.view.View
 import android.widget.PopupWindow
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -14,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,6 +21,18 @@ import com.example.mini_project.R
 @Preview(showSystemUi = true)
 @Composable
 fun TrophyScreenPreview (
+    modifier: Modifier = Modifier,
+) {
+    TrophyLazyGrid(
+        image = painterResource(id = R.drawable.trophy),
+        achievementText = "Achievement"
+    )
+}
+
+@Composable
+fun TrophyLazyGrid (
+    image: Painter,
+    achievementText: String,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
