@@ -67,6 +67,11 @@ fun TrophyLazyGrid (
     }
 }
 
+@Composable
+fun TrophyItems() {
+    //Laves på senere
+}
+
 /*Dén her code snippet nedenunder er til popup window - den er ikke færdig endnu*/
 private fun PopUpWindowAchievementDetails() {
     val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
