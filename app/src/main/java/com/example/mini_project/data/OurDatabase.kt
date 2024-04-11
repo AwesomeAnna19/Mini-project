@@ -14,8 +14,8 @@ import androidx.room.RoomDatabase
 abstract class OurDatabase : RoomDatabase() {
 
     //The following functions return the Data Access Objects, so the database knows about them
-    //abstract fun taskDao(): TaskDao
-    //abstract fun categoryDao(): CategoryDao
+    abstract fun taskDao(): TaskDao
+    abstract fun categoryDao(): CategoryDao
     //abstract fun badgeDao(): BadgeDao
 
     //Companion object allows access to methods to create or get the database
