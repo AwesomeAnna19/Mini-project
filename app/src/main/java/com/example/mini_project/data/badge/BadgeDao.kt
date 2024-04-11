@@ -1,4 +1,4 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.badge
 
 import androidx.room.Dao
 import androidx.room.Query

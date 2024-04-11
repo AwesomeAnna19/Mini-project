@@ -1,6 +1,5 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.badge
 
-import com.example.mini_project.data.badge.Badge
 import kotlinx.coroutines.flow.Flow
 
 class OfflineBadgesRepository(private val badgeDao: BadgeDao) : BadgesRepository {

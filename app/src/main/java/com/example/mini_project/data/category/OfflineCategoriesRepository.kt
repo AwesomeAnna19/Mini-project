@@ -1,4 +1,4 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.category
 
 import com.example.mini_project.data.category.CategoriesRepository
 import com.example.mini_project.data.category.Category

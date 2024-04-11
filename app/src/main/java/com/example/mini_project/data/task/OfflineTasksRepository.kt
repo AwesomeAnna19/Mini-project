@@ -1,4 +1,4 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.task
 
 import com.example.mini_project.data.category.Category
 import com.example.mini_project.data.task.Task
