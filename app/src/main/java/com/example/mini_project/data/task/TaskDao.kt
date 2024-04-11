@@ -7,26 +7,26 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.mini_project.data.category.Category
-import com.example.mini_project.data.task.Task
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
 
     /*Fra Miro: Select all based on id -> instans af klassen spyttes ud*/
     @Query("SELECT * from tasks WHERE id = :id")
-    fun getTask(id: Int): Task
+    fun getTask(id: Int): Flow<List<Task>>
 
     /*Fra Miro: Select og group by reminder schedule*/
     @Query("SELECT SUM (id) from tasks GROUP BY id")
-    fun tasksReminderSchedules(id: Int): Task
+    fun tasksReminderSchedules(id: Int): Flow<List<Task>>
 
     /*Fra Miro: Sort based on id ascending eller titel*/
     @Query("SELECT * from tasks ORDER BY id ASC")
-    fun groupsOfSameTasks(id: Int): Task
+    fun groupsOfSameTasks(id: Int): Flow<List<Task>>
 
     /*Fra Miro: filter based on category*/
     @Query("SELECT * from tasks WHERE category = :category")
-    fun filterCategoriesStreaks(category: Category): Category
+    fun filterCategoriesStreaks(category: Category): Flow<List<Task>>
 
     /*Fra Miro: Add*/
     @Insert(onConflict = OnConflictStrategy.IGNORE)

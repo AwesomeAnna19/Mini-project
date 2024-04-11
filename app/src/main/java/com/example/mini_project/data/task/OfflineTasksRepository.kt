@@ -1,9 +1,6 @@
 package com.example.mini_project.data.task
 
 import com.example.mini_project.data.category.Category
-import com.example.mini_project.data.task.Task
-import com.example.mini_project.data.task.TaskDao
-import com.example.mini_project.data.task.TasksRepository
 import kotlinx.coroutines.flow.Flow
 
 class OfflineTasksRepository(private val taskDao: TaskDao) : TasksRepository {
