@@ -28,14 +28,14 @@ interface TaskDao {
 
     /*Fra Miro: Add*/
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(item: Task)
+    suspend fun insert(task: Task)
 
     /*Fra Miro: Edit*/
     @Update
-    suspend fun update(item: Task)
+    suspend fun update(task: Task)
 
     /*Fra Miro: Delete*/
     @Delete
-    suspend fun delete(item: Task)
+    suspend fun delete(task: Task)
 
 }
