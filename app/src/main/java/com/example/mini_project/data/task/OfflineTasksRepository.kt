@@ -1,4 +1,4 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.task
 
 import kotlinx.coroutines.flow.Flow
 
