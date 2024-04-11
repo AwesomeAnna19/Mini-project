@@ -1,4 +1,4 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.category
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

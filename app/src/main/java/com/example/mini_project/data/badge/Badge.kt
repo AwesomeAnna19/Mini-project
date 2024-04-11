@@ -1,4 +1,4 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.badge
 
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.room.Entity

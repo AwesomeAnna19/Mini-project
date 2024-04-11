@@ -25,8 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mini_project.R
-import com.example.mini_project.data.Category
-import com.example.mini_project.data.Task
+import com.example.mini_project.data.category.Category
+import com.example.mini_project.data.task.Task
 import com.example.mini_project.ui.screens.LifeRPGBottomBar
 import com.example.mini_project.ui.screens.LifeRPGTopBar
 import com.example.mini_project.ui.theme.MiniprojectTheme
@@ -39,7 +39,8 @@ import com.example.mini_project.ui.theme.MiniprojectTheme
 //inventory row
 
 
-val myTask: Task = Task(title = "This is a task", Category("Brain"), difficulty = 1, dueDate = "1/3",)
+val myCategory = Category(name = "Health", color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
+val myTask: Task = Task(title = "This is a task", category = myCategory, difficulty = 1, frequency = "1/3", streak = 0)
 
 val myTaskList = listOf<Task>(myTask, myTask, myTask)
 
@@ -165,7 +166,7 @@ fun TaskRow(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Text(text = task.dueDate)
+            Text(text = task.frequency)
         }
     }
 
