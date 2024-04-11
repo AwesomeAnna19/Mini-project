@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface CategoriesRepository {
 
-    fun getCategoryList(): Flow<List<Task>>
+    fun getCategoryList(name: String): Flow<List<Category>>
 
-    fun categoryReminderSchedulesList(): Flow<List<Task>>
+    fun categoryReminderSchedulesList(name: String): Flow<List<Category>>
 
 }
