@@ -1,6 +1,5 @@
 package com.example.mini_project.data.badge
 
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -19,4 +18,4 @@ data class Badge (
     val maximumProgress: Int,
 
     val isEarned: Boolean = false,
-) 
+)
