@@ -12,13 +12,13 @@ interface TaskRepository {
 
     fun filterCategoriesStreaksStats(): Flow<List<Task>>
 
-    /* Inserts/adds an item/task in the data source */
-    suspend fun insertItem(item: Task)
+    /* Inserts/adds a task in the data source */
+    suspend fun insertTask(task: Task)
 
-    /* Deletes an item/task from the data source */
-    suspend fun deleteItem(item: Task)
+    /* Deletes a task from the data source */
+    suspend fun deleteTask(task: Task)
 
-    /* Updates an item/task in the data source */
-    suspend fun updateItem(item: Task)
+    /* Updates a task in the data source */
+    suspend fun updateTask(task: Task)
 
 }
