@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Mini-project</string>
     <string name="add_task">Add Task</string>
+    <string name="trophy_detail_popup_title">Achievement 1</string>
+    <string name="trophy_detail_popup">You got this achievement, because you are so great!</string>
 </resources>
