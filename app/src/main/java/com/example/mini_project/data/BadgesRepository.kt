@@ -2,7 +2,7 @@ package com.example.mini_project.data
 
 import kotlinx.coroutines.flow.Flow
 
-interface BadgeRepository {
+interface BadgesRepository {
 
     fun getBadgeList(id: Int): Flow<List<Badge>>
 

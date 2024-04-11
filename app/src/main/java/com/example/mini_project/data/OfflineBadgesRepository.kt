@@ -1,8 +1,9 @@
 package com.example.mini_project.data
 
+import com.example.mini_project.data.badge.Badge
 import kotlinx.coroutines.flow.Flow
 
-class OfflineBadgesRepository(private val badgeDao: BadgeDao) : BadgeRepository {
+class OfflineBadgesRepository(private val badgeDao: BadgeDao) : BadgesRepository {
     override fun getBadgeList(id: Int): Flow<List<Badge>> = badgeDao.getBadge(id)
 
     override fun sortBadgesByDoneList(isEarned: Boolean): Flow<List<Badge>> = badgeDao.getBadge(isEarned)
