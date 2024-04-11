@@ -4,13 +4,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
 
-    fun getTaskList(): Flow<List<Task>>
+    fun getTaskList(id: Int): Flow<List<Task>>
 
-    fun tasksReminderSchedulesList(): Flow<List<Task>>
+    fun tasksReminderSchedulesList(id: Int): Flow<List<Task>>
 
-    fun groupsOfSameTasksList(): Flow<List<Task>>
+    fun groupsOfSameTasksList(id: Int): Flow<List<Task>>
 
-    fun filterCategoriesStreaksStats(): Flow<List<Task>>
+    fun filterCategoriesStreaksStats(category: Category): Flow<List<Task>>
 
     /* Inserts/adds an item/task in the data source */
     suspend fun insertItem(item: Task)
