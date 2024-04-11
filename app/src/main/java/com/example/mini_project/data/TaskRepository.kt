@@ -1,6 +1,6 @@
 package com.example.mini_project.data
 
-import java.util.concurrent.Flow
+import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
 

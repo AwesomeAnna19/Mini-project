@@ -1,9 +1,7 @@
 package com.example.mini_project.data
 
-import androidx.room.Dao
-import java.util.concurrent.Flow
+import kotlinx.coroutines.flow.Flow
 
-@Dao
 interface CategoryRepository {
 
     fun getCategoryList(): Flow<List<Task>>
