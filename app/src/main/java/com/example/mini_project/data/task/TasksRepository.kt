@@ -1,8 +1,8 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.task
 
 import kotlinx.coroutines.flow.Flow
 
-interface TaskRepository {
+interface TasksRepository {
 
     fun getTaskList(): Flow<List<Task>>
 

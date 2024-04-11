@@ -4,6 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.mini_project.data.badge.Badge
+import com.example.mini_project.data.category.Category
+import com.example.mini_project.data.category.CategoryDao
+import com.example.mini_project.data.task.Task
+import com.example.mini_project.data.task.TaskDao
 
 //Database annotation for the abstract class directly below parameters
 @Database (

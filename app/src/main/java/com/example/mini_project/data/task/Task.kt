@@ -1,7 +1,8 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.task
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.mini_project.data.category.Category
 
 //@Entity annotation marks a class as a database Entity class.
 // For each Entity class, the app creates a database table to hold the items.

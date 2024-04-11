@@ -1,8 +1,9 @@
-package com.example.mini_project.data
+package com.example.mini_project.data.category
 
+import com.example.mini_project.data.task.Task
 import kotlinx.coroutines.flow.Flow
 
-interface CategoryRepository {
+interface CategoriesRepository {
 
     fun getCategoryList(): Flow<List<Task>>
 
