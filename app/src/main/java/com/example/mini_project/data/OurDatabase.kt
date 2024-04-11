@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.mini_project.data.badge.Badge
+import com.example.mini_project.data.badge.BadgeDao
 import com.example.mini_project.data.category.Category
 import com.example.mini_project.data.category.CategoryDao
 import com.example.mini_project.data.task.Task
@@ -21,7 +22,7 @@ abstract class OurDatabase : RoomDatabase() {
     //The following functions return the Data Access Objects, so the database knows about them
     abstract fun taskDao(): TaskDao
     abstract fun categoryDao(): CategoryDao
-    //abstract fun badgeDao(): BadgeDao
+    abstract fun badgeDao(): BadgeDao
 
     //Companion object allows access to methods to create or get the database
     // and uses the class name as the qualifier
