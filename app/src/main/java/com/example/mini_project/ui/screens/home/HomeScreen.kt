@@ -42,7 +42,7 @@ import com.example.mini_project.ui.theme.MiniprojectTheme
 val myCategory = Category(name = "Health", color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
 val myTask: Task = Task(title = "This is a task", category = myCategory, difficulty = 1, frequency = "1/3", streak = 0)
 
-val myTaskList = listOf<Task>(myTask, myTask, myTask)
+val myTaskList = listOf(myTask, myTask, myTask)
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

@@ -1,6 +1,5 @@
 package com.example.mini_project.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Celebration
@@ -8,17 +7,14 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.List
-import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.material.Badge
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import com.example.mini_project.data.Screen
 
 
@@ -58,7 +54,6 @@ val navItemList = listOf(
 
 
 //Funktionalitet mangler
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LifeRPGBottomBar(
     //currentTab: Screen,              //Den bottom nav tab man er på lige nu
@@ -77,7 +72,7 @@ fun LifeRPGBottomBar(
                     BadgedBox(
                         badge ={
                             if(navItem.hasNews){
-
+                                //To do
                             }
 
                         }

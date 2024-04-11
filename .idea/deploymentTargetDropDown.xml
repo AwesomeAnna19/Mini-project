@@ -5,6 +5,12 @@
       <entry key="GraphScreenPreview">
         <State />
       </entry>
+      <entry key="TaskRowPreview">
+        <State />
+      </entry>
+      <entry key="TrophyScreenPreview">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
