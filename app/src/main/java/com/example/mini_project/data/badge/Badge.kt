@@ -19,4 +19,4 @@ data class Badge (
     val maximumProgress: Int,
 
     val isEarned: Boolean = false,
-)
+) 
