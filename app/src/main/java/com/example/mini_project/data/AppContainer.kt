@@ -1,15 +1,15 @@
 package com.example.mini_project.data
 
 import android.content.Context
-import com.example.mini_project.data.category.CategoriesRepository
-import com.example.mini_project.data.task.TasksRepository
+// import com.example.mini_project.data.category.CategoriesRepository
+// import com.example.mini_project.data.task.TasksRepository
 
 /**
  * App container for Dependency injection - best practices
  */
 interface AppContainer {
-    val tasksRepository: TasksRepository
-    val categoriesRepository: CategoriesRepository
+    //val tasksRepository: TasksRepository
+    // val categoriesRepository: CategoriesRepository
     //val badgesRepository: BadgesRepository
 }
 
