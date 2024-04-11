@@ -1,22 +1,19 @@
 package com.example.mini_project.ui.screens.trophy
 
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mini_project.R
@@ -51,6 +48,7 @@ fun TrophyLazyGrid (
                 Image(
                     painter = painterResource(id = R.drawable.trophy),
                     contentDescription = toString(),
+                    modifier.clickable {  }
                 )
                 Text(
                     text = "Achievement",
@@ -63,25 +61,9 @@ fun TrophyLazyGrid (
     }
 }
 
+
+
 @Composable
 fun TrophyItems() {
-    //Laves på senere
-}
-
-@Composable
-fun TrophyDetailsPopUp() {
 
 }
-
-/*Dén her code snippet nedenunder er til popup window - den er ikke færdig endnu*/
-/*private fun PopUpWindowAchievementDetails() {
-    val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    val popupView = inflater.inflate(R.layout.mainpopup, null)
-
-    val width = ViewGroup.LayoutParams.MATCH_PARENT
-    val height = ViewGroup.LayoutParams.WRAP_CONTENT
-    val focusable: Boolean = true
-    val popupWindow = PopupWindow(popupView,width,height,focusable)
-
-    popupWindow.showAtLocation(layout,Gravity.BOTTOM,0,0)
-}*/
