@@ -9,6 +9,8 @@ import androidx.room.DatabaseConfiguration
 import com.example.mini_project.OurApplication
 import com.example.mini_project.data.AppContainer
 import com.example.mini_project.data.OurDatabase
+import com.example.mini_project.data.task.Categories
+import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.data.task.TaskDao
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 * Unlike the activity instance, ViewModel objects are not destroyed.
 * The app automatically retains ViewModel objects during configuration changes
  so that the data they hold is immediately available after the recomposition.
+ *
  */
 
 /*
@@ -32,7 +35,7 @@ class HomeViewModel(private val container: AppContainer): ViewModel() {
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     suspend fun test() {
-        container.tasksRepository.insertTask(Task(1, "Work", 5, "Daily", 2))
+        container.tasksRepository.insertTask(Task(1, "Work", 5, Frequency.Monthly, 2, Categories.Health))
     }
 
     companion object {

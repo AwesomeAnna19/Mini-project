@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mini_project.R
 import com.example.mini_project.data.category.Category
+import com.example.mini_project.data.task.Categories
+import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.ui.screens.LifeRPGBottomBar
 import com.example.mini_project.ui.screens.LifeRPGTopBar
@@ -47,7 +49,7 @@ import kotlin.coroutines.CoroutineContext
 
 
 val myCategory = Category(name = "Health", color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
-val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = "1/3", streak = 0)
+val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Frequency.Monthly, streak = 0, category = Categories.Health)
 
 val myTaskList = listOf(myTask, myTask, myTask)
 
@@ -180,7 +182,7 @@ fun TaskRow(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Text(text = task.frequency)
+            Text(text = task.frequency.name)
         }
     }
 

@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.mini_project.data.category.Category
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,17 +13,19 @@ interface TaskDao {
 
     /*Fra Miro: Select all based on id -> instans af klassen spyttes ud*/
     @Query("SELECT * from tasks WHERE id = :id")
-    fun getTask(id: Int): Flow<List<Task>>
+    fun getTask(id: Int): Flow<Task>
 
     /*Fra Miro: Select og group by reminder schedule*/
-    @Query("SELECT * from tasks GROUP BY id")
-    fun tasksReminderSchedules(): Flow<List<Task>>
+    @Query("SELECT * from tasks WHERE frequency = :frequency ORDER BY id ASC")
+    fun getTasksByFrequency(frequency: Frequency): Flow<List<Task>>
 
-    /*Fra Miro: Sort based on id ascending eller titel*/
-    @Query("SELECT * from tasks ORDER BY id ASC")
-    fun groupsOfSameTasks(): Flow<List<Task>>
 
     /*Fra Miro: filter based on category*/
+    @Query("SELECT * from tasks WHERE category = :category")
+    fun getTasksByCategory(category: Categories): Flow<List<Task>>
+
+    @Query("SELECT * from tasks WHERE category = :category ORDER BY streak ASC LIMIT 5")
+    fun getFiveTasksByCategoryAndSortByStreak(category: Categories): Flow<List<Task>>
 
     /*Fra Miro: Add*/
     @Insert(onConflict = OnConflictStrategy.IGNORE)

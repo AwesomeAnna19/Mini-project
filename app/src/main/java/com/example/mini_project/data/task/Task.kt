@@ -11,12 +11,27 @@ data class Task (
     @PrimaryKey(autoGenerate = true) //@PrimaryKey makes id the primary key to uniquely identify every entry in Item table
     val id: Int = 0,
     val title: String,
-    //val category: Category,  //Af type string eller category. Enum?
     val difficulty: Int,     //Range ?
-    val frequency: String,   //One time, daily, weekly, monthly, yearly. Enum?
-    val streak: Int          //Times done in a row
+    val frequency: Frequency,
+    val streak: Int,         //Times done in a row
+    val category: Categories
 )
 
+enum class  Frequency {
 
+    Daily,
+    Weekly,
+    Monthly,
+    Yearly
+
+}
+
+enum class Categories {
+
+    Hobbies,
+    Health,
+    Social
+
+}
 
 
