@@ -8,6 +8,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BadgeDao {
 
+    /*Fra Miro: Edit*/
+    @Update
+    suspend fun update(badge: Badge)
+
+
     /* Fra Miro: Select based on id */
     @Query("SELECT * from badges WHERE id = :id")
     fun getBadge(id: Int): Flow<List<Badge>>
@@ -19,9 +24,5 @@ interface BadgeDao {
     /* Fra Miro: Sort by stat progress descending */
     @Query("SELECT * from badges ORDER BY statValue = :statValue DESC")
     fun sortBadgesByStatProgress(statValue: Int): Flow<List<Badge>>
-
-    /*Fra Miro: Edit*/
-    @Update
-    suspend fun update(badge: Badge)
 
 }
