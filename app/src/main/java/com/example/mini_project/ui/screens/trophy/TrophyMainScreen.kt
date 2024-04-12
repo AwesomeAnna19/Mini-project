@@ -1,6 +1,7 @@
 package com.example.mini_project.ui.screens.trophy
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -47,6 +48,7 @@ fun TrophyLazyGrid (
                 Image(
                     painter = painterResource(id = R.drawable.trophy),
                     contentDescription = toString(),
+                    modifier.clickable {  }
                 )
                 Text(
                     text = "Achievement",
@@ -59,20 +61,9 @@ fun TrophyLazyGrid (
     }
 }
 
+
+
 @Composable
 fun TrophyItems() {
-    //Laves på senere
+
 }
-
-/*Dén her code snippet nedenunder er til popup window - den er ikke færdig endnu*/
-/*private fun PopUpWindowAchievementDetails() {
-    val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    val popupView = inflater.inflate(R.layout.mainpopup, null)
-
-    val width = ViewGroup.LayoutParams.MATCH_PARENT
-    val height = ViewGroup.LayoutParams.WRAP_CONTENT
-    val focusable: Boolean = true
-    val popupWindow = PopupWindow(popupView,width,height,focusable)
-
-    popupWindow.showAtLocation(layout,Gravity.BOTTOM,0,0)
-}*/

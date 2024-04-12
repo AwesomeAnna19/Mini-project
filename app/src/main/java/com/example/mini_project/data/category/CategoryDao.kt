@@ -12,7 +12,6 @@ interface CategoryDao {
     fun getCategory(name: String): Flow<List<Category>>
 
     /*Fra Miro: Select og group by reminder schedule*/
-    @Query("SELECT SUM (name) from categories GROUP BY name")
-    fun categoryReminderSchedules(name: String): Flow<List<Category>>
+
 
 }

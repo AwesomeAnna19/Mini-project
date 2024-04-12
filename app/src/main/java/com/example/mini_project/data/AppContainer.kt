@@ -20,6 +20,8 @@ interface AppContainer {
     val tasksRepository: TasksRepository
     val categoriesRepository: CategoriesRepository
     val badgesRepository: BadgesRepository
+
+    val __dataBase: OurDatabase
 }
 
 /**
@@ -46,5 +48,9 @@ class AppDataContainer(private val context: Context) : AppContainer {
 
     override val badgesRepository: BadgesRepository by lazy {
         OfflineBadgesRepository(OurDatabase.getDatabase(context).badgeDao())
+    }
+
+    override val __dataBase: OurDatabase by lazy {
+        OurDatabase.getDatabase(context)
     }
 }

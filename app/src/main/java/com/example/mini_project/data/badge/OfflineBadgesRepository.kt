@@ -10,4 +10,4 @@ class OfflineBadgesRepository(private val badgeDao: BadgeDao) : BadgesRepository
     override fun sortBadgesByStatProgress(maximumProgress: Int): Flow<List<Badge>> = badgeDao.sortBadgesByStatProgress(maximumProgress)
 
     override suspend fun updateBadge(badge: Badge) = badgeDao.update(badge)
-} 
+}

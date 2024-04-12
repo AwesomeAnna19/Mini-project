@@ -11,7 +11,7 @@ interface TasksRepository {
 
     fun groupsOfSameTasksList(id: Int): Flow<List<Task>>
 
-    fun filterCategoriesStreaksStats(category: Category): Flow<List<Task>>
+    //fun filterCategoriesStreaksStats(category: Category): Flow<List<Task>>
 
     /* Inserts/adds a task in the data source */
     suspend fun insertTask(task: Task)
