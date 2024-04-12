@@ -1,7 +1,6 @@
 package com.example.mini_project.ui.screens.home
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,6 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
@@ -28,15 +29,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mini_project.R
+import com.example.mini_project.data.Screen
 import com.example.mini_project.data.category.Category
 import com.example.mini_project.data.task.Task
+import com.example.mini_project.ui.AppViewModelProvider
+import com.example.mini_project.ui.OurUiState
 import com.example.mini_project.ui.screens.LifeRPGBottomBar
 import com.example.mini_project.ui.screens.LifeRPGTopBar
+import com.example.mini_project.ui.screens.navItemList
 import com.example.mini_project.ui.theme.MiniprojectTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
+
 
 
 //list of ting
@@ -54,8 +58,12 @@ val myTaskList = listOf(myTask, myTask, myTask)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory)
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    onTabPressed: ((Screen)-> Unit),
+    ourUiState: OurUiState
 ) {
+    val homeUiState by viewModel.homeUiState.collectAsState()
+
     LaunchedEffect (Unit) {
         withContext(Dispatchers.IO) {
             viewModel.test()
@@ -67,7 +75,14 @@ fun HomeScreen(
         },
         floatingActionButton = { AddTaskFAB(onClick = { /*TODO*/ }) },
         bottomBar = {
-            LifeRPGBottomBar()
+            LifeRPGBottomBar(
+                currentTab = ourUiState.currentScreen ,
+                onTabPressed = onTabPressed,
+                navItemList = navItemList,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            )
         }
     ) { contentPadding ->
             HomeBody(
@@ -190,7 +205,7 @@ fun TaskRow(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    //HomeScreen(onTabPressed = ((Screen)-> Unit))
 }
 
 @Preview(showBackground = true)
