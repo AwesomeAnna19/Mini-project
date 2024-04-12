@@ -10,19 +10,29 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mini_project.R
+import com.example.mini_project.ui.AppViewModelProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Preview(showSystemUi = true)
 @Composable
 fun TrophyScreenPreview (
     modifier: Modifier = Modifier,
+    viewModel: TrophyViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
+    val trophyUiState by viewModel.trophyUiState.collectAsState()
+
     TrophyLazyGrid(
         image = painterResource(id = R.drawable.trophy),
         achievementText = "Achievement"

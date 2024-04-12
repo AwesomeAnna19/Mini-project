@@ -11,6 +11,21 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
 
+    //To insert a task into the tasks table
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(task: Task)
+
+    //To update a task in the tasks table
+    @Update
+    suspend fun update(task: Task)
+
+    //To delete a task from the tasks table
+    @Delete
+    suspend fun delete(task: Task)
+
+
+
+
     /*Fra Miro: Select all based on id -> instans af klassen spyttes ud*/
     @Query("SELECT * from tasks WHERE id = :id")
     fun getTask(id: Int): Flow<Task>
@@ -27,16 +42,5 @@ interface TaskDao {
     @Query("SELECT * from tasks WHERE category = :category ORDER BY streak ASC LIMIT 5")
     fun getFiveTasksByCategoryAndSortByStreak(category: Categories): Flow<List<Task>>
 
-    /*Fra Miro: Add*/
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(task: Task)
-
-    /*Fra Miro: Edit*/
-    @Update
-    suspend fun update(task: Task)
-
-    /*Fra Miro: Delete*/
-    @Delete
-    suspend fun delete(task: Task)
 
 }
