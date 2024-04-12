@@ -14,11 +14,14 @@ interface BadgeDao {
 
     /* Fra Miro: Sort by done descending */
     @Query("SELECT * from badges ORDER BY isEarned DESC")
-    fun sortBadgesByDone(): Flow<List<Badge>>
+    fun getBadgesAndSortByDone(): Flow<List<Badge>>
 
     /* Fra Miro: Sort by stat progress descending */
     @Query("SELECT * from badges ORDER BY statValue = :statValue DESC")
     fun sortBadgesByStatProgress(statValue: Int): Flow<List<Badge>>
+
+    @Query("SELECT * from badges WHERE isEarned = true UNION SELECT * from badges WHERE isEarned = false ORDER BY maximumProgress")
+    fun getAllBadgesSortedByProgress() : Flow<List<Badge>>
 
     /*Fra Miro: Edit*/
     @Update

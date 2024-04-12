@@ -6,7 +6,7 @@ interface BadgesRepository {
 
     fun getBadgeList(id: Int): Flow<List<Badge>>
 
-    fun sortBadgesByDoneList(isEarned: Boolean): Flow<List<Badge>>
+    fun sortBadgesByDoneList(): Flow<List<Badge>>
 
     fun sortBadgesByStatProgress(maximumProgress: Int): Flow<List<Badge>>
 
