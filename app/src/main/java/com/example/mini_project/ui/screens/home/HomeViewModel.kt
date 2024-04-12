@@ -43,7 +43,6 @@ class HomeViewModel(private val container: AppContainer): ViewModel() {
             }
         }
     }
-
 }
 
 data class HomeUiState(
