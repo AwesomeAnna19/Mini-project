@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.mini_project.OurApplication
 import com.example.mini_project.ui.screens.home.HomeViewModel
+import com.example.mini_project.ui.screens.trophy.TrophyViewModel
 
 
 /**
@@ -22,7 +23,9 @@ object AppViewModelProvider {
         }
 
         // Initializer for TrophyMainScreen
-
+        initializer {
+            TrophyViewModel(ourApplication().container)
+        }
 
     }
 }
