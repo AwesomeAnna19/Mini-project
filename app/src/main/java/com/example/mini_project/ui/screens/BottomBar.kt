@@ -1,6 +1,5 @@
 package com.example.mini_project.ui.screens
 
-import androidx.compose.foundation.lazy.layout.LazyLayoutPinnedItemList
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Celebration
@@ -19,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.mini_project.data.Screen
-import com.example.mini_project.data.badge.Badge
 
 
 data class NavItem (
@@ -58,17 +56,21 @@ val navItemList = listOf(
 //Funktionalitet mangler
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LifeRPGBottomBar(
+fun HabitizeBottomBar(
     currentTab: Screen,              //Den bottom nav tab man er på lige nu
     onTabPressed: ((Screen)-> Unit), //Når man trykker på en tab
     navItemList: List<NavItem>,
+  //  navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(modifier = modifier) {
         for (navItem in navItemList) {
             NavigationBarItem(
                 selected = currentTab == navItem.screen, //En navigation bar item er selected hvis den nuværende tab er lig den skærmen på den navitem, som i øjeblikket loopes over
-                onClick = {onTabPressed(navItem.screen)},
+                onClick = {
+                        onTabPressed(navItem.screen)
+                     //    navController.navigate(navItem.screen.name)
+                    },
                 label = {
                     Text(text = navItem.title)
                 },

@@ -1,14 +1,14 @@
 package com.example.mini_project.ui.navigation
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.example.mini_project.data.Screen
+import com.example.mini_project.ui.screens.FullScreen
+import com.example.mini_project.ui.screens.home.HomeScreen
+import com.example.mini_project.ui.screens.trophy.TrophyScreenPreview
 
 /**
  *
@@ -16,7 +16,7 @@ import com.example.mini_project.data.Screen
  */
 
 @Composable
-fun OurNavHost(
+fun HabitizeNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
@@ -25,6 +25,16 @@ fun OurNavHost(
         startDestination = Screen.Tasks.name,
         modifier = Modifier
     ) {
+        composable(route = Screen.Tasks.name) {
+           // HomeScreen()
+        }
+        composable(route = Screen.Stats.name) {
+            FullScreen()
+        }
+
+        composable(route = Screen.Rewards.name) {
+            TrophyScreenPreview()
+        }
 
     }
 }

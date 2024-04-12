@@ -37,7 +37,7 @@ import com.example.mini_project.data.task.Task
 import com.example.mini_project.ui.AppViewModelProvider
 import com.example.mini_project.ui.OurUiState
 import com.example.mini_project.ui.screens.LifeRPGBottomBar
-import com.example.mini_project.ui.screens.LifeRPGTopBar
+import com.example.mini_project.ui.screens.HabitizeTopBar
 import com.example.mini_project.ui.screens.navItemList
 import com.example.mini_project.ui.theme.MiniprojectTheme
 import kotlinx.coroutines.Dispatchers
@@ -73,7 +73,7 @@ fun HomeScreen(
     }
     Scaffold(
         topBar = {
-            LifeRPGTopBar()
+            HabitizeTopBar()
         },
         floatingActionButton = { AddTaskFAB(onClick = { /*TODO*/ }) },
         bottomBar = {
