@@ -60,7 +60,7 @@ fun HabitizeBottomBar(
     currentTab: Screen,              //Den bottom nav tab man er på lige nu
     onTabPressed: ((Screen)-> Unit), //Når man trykker på en tab
     navItemList: List<NavItem>,
-  //  navController: NavHostController,
+  //navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(modifier = modifier) {
@@ -81,7 +81,6 @@ fun HabitizeBottomBar(
                                 Badge {
                                 }
                             }
-
                         }
                     ) {
                         Icon(
@@ -94,6 +93,5 @@ fun HabitizeBottomBar(
                 }
             )
         }
-
     }
 }
