@@ -6,6 +6,6 @@ interface CategoriesRepository {
 
     fun getCategoryList(name: String): Flow<List<Category>>
 
-    fun categoryReminderSchedulesList(name: String): Flow<List<Category>>
+    //fun categoryReminderSchedulesList(name: String): Flow<List<Category>>
 
 }

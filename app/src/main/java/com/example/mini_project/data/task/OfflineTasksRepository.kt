@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 class OfflineTasksRepository(private val taskDao: TaskDao) : TasksRepository {
     override fun getTaskList(id: Int): Flow<List<Task>> = taskDao.getTask(id)
 
-    override fun tasksReminderSchedulesList(id: Int): Flow<List<Task>> = taskDao.tasksReminderSchedules(id)
+    override fun tasksReminderSchedulesList(id: Int): Flow<List<Task>> = taskDao.tasksReminderSchedules()
 
-    override fun groupsOfSameTasksList(id: Int): Flow<List<Task>> = taskDao.groupsOfSameTasks(id)
+    override fun groupsOfSameTasksList(id: Int): Flow<List<Task>> = taskDao.groupsOfSameTasks()
 
-    override fun filterCategoriesStreaksStats(category: Category): Flow<List<Task>> = taskDao.filterCategoriesStreaks(category)
+    //override fun filterCategoriesStreaksStats(category: Category): Flow<List<Task>> = taskDao.filterCategoriesStreaks(category)
 
     override suspend fun insertTask(task: Task) = taskDao.insert(task)
 

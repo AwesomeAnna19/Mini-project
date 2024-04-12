@@ -17,16 +17,14 @@ interface TaskDao {
     fun getTask(id: Int): Flow<List<Task>>
 
     /*Fra Miro: Select og group by reminder schedule*/
-    @Query("SELECT SUM (id) from tasks GROUP BY id")
-    fun tasksReminderSchedules(id: Int): Flow<List<Task>>
+    @Query("SELECT * from tasks GROUP BY id")
+    fun tasksReminderSchedules(): Flow<List<Task>>
 
     /*Fra Miro: Sort based on id ascending eller titel*/
     @Query("SELECT * from tasks ORDER BY id ASC")
-    fun groupsOfSameTasks(id: Int): Flow<List<Task>>
+    fun groupsOfSameTasks(): Flow<List<Task>>
 
     /*Fra Miro: filter based on category*/
-    @Query("SELECT * from tasks WHERE category = :category")
-    fun filterCategoriesStreaks(category: Category): Flow<List<Task>>
 
     /*Fra Miro: Add*/
     @Insert(onConflict = OnConflictStrategy.IGNORE)
