@@ -1,6 +1,7 @@
 package com.example.mini_project.ui.screens.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -36,8 +37,9 @@ import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.ui.AppViewModelProvider
 import com.example.mini_project.ui.OurUiState
-import com.example.mini_project.ui.screens.LifeRPGBottomBar
+import com.example.mini_project.ui.screens.HabitizeBottomBar
 import com.example.mini_project.ui.screens.HabitizeTopBar
+import com.example.mini_project.ui.screens.home.entry.AddTaskFAB
 import com.example.mini_project.ui.screens.navItemList
 import com.example.mini_project.ui.theme.MiniprojectTheme
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +54,7 @@ import kotlinx.coroutines.withContext
 //inventory row
 
 
-val myCategory = Category(name = "Health", color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
+val myCategory = Category(name = Categories.Health, color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
 val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Frequency.Monthly, streak = 0, category = Categories.Health)
 
 val myTaskList = listOf(myTask, myTask, myTask)
@@ -62,7 +64,9 @@ val myTaskList = listOf(myTask, myTask, myTask)
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onTabPressed: ((Screen)-> Unit),
-    ourUiState: OurUiState
+    ourUiState: OurUiState,
+    navigateToTaskEntry: () -> Unit,
+    navigateToTaskUpdate: (Int) -> Unit
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
 
@@ -75,9 +79,10 @@ fun HomeScreen(
         topBar = {
             HabitizeTopBar()
         },
-        floatingActionButton = { AddTaskFAB(onClick = { /*TODO*/ }) },
+        floatingActionButton = {
+            AddTaskFAB(onClick = navigateToTaskEntry) },
         bottomBar = {
-            LifeRPGBottomBar(
+            HabitizeBottomBar(
                 currentTab = ourUiState.currentScreen ,
                 onTabPressed = onTabPressed,
                 navItemList = navItemList,
@@ -90,6 +95,7 @@ fun HomeScreen(
             HomeBody(
                 categoryTitles = "dude",
                 categoryTaskList = myTaskList,
+                onTaskClick = navigateToTaskUpdate,
                 modifier = Modifier
                     .padding(contentPadding)
                     .fillMaxSize()
@@ -100,6 +106,7 @@ fun HomeScreen(
 fun HomeBody(
     categoryTitles: String,
     categoryTaskList: List<Task>,
+    onTaskClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -110,6 +117,7 @@ fun HomeBody(
             CategoryTaskList(
                 categoryTitle = categoryTitles,
                 taskList = categoryTaskList,
+                onTaskClick = {onTaskClick(it.id)},
                 modifier = Modifier
             )
         }
@@ -121,6 +129,7 @@ fun HomeBody(
 fun CategoryTaskList(
     categoryTitle: String,
     taskList: List<Task>,
+    onTaskClick: (Task) -> Unit,
     modifier: Modifier = Modifier
 
     ) {
@@ -142,7 +151,10 @@ fun CategoryTaskList(
                 padding( dimensionResource(R.dimen.padding_medium)                )
             )
 
-            TaskList(taskList = taskList )
+            TaskList(
+                taskList = taskList,
+                onTaskClick = onTaskClick
+            )
         }
     }
 }
@@ -152,6 +164,7 @@ fun CategoryTaskList(
 @Composable
 private fun TaskList(
     taskList: List<Task>,
+    onTaskClick: (Task) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -162,6 +175,7 @@ private fun TaskList(
                 task = myTask,
                 modifier = Modifier
                     .padding(1.dp)
+                    .clickable { onTaskClick(task) }
             )
         }
     }
@@ -214,7 +228,10 @@ fun HomeScreenPreview() {
 @Composable
 fun CategorizedTaskListPreview() {
     MiniprojectTheme {
+        /*
         CategoryTaskList(categoryTitle = "title", taskList = myTaskList)
+
+         */
     }
 
 }
@@ -223,9 +240,12 @@ fun CategorizedTaskListPreview() {
 @Composable
 fun TaskListPreview() {
     MiniprojectTheme {
+        /*
         TaskList(
             myTaskList
         )
+
+         */
 
     }
 }
