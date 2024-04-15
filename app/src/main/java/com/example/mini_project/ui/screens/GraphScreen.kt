@@ -27,6 +27,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.mini_project.R
+import com.example.mini_project.data.Screen
+import com.example.mini_project.ui.navigation.NavRouteHandler
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatrick.vico.compose.chart.CartesianChartHost
@@ -43,6 +46,10 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import java.math.RoundingMode
 
+object StatsRoute : NavRouteHandler {
+    override val routeString = Screen.Stats.name
+    override val topBarTitleResource = R.string.stats_screen_title
+}
 @Composable
 fun FullScreen() {
     //var ShowingTask by remember {mutableStateOf(false)}
@@ -51,7 +58,9 @@ fun FullScreen() {
     Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize(1f)) {
         Column(
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxHeight(0.8f).background(color = Color.LightGray)
+            modifier = Modifier
+                .fillMaxHeight(0.8f)
+                .background(color = Color.LightGray)
         ) {
 
             Row(
@@ -66,7 +75,7 @@ fun FullScreen() {
                     text = "Show tasks",
                     enabled = showingCategory,
                     modifier = Modifier
-                        .background(if(!showingCategory) Color.DarkGray else Color.Gray)
+                        .background(if (!showingCategory) Color.DarkGray else Color.Gray)
                         .fillMaxHeight(1f)
                         .fillMaxWidth(0.3f)
                 )
@@ -76,7 +85,7 @@ fun FullScreen() {
                     text = "Show categories",
                     enabled = !showingCategory,
                     modifier = Modifier
-                        .background(if(showingCategory) Color.DarkGray else Color.Gray)
+                        .background(if (showingCategory) Color.DarkGray else Color.Gray)
                         .fillMaxHeight(1f)
                         .fillMaxWidth(0.4f)
                 )

@@ -22,6 +22,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -58,18 +59,21 @@ fun AddTaskBottomSheet(
     sheetScaffoldState: BottomSheetScaffoldState,
     onCancel: () -> Unit,
     onSubmit: () -> Unit,
-    submitButtonLabel: String,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
 
-   // val juice by juiceTrackerViewModel.currentJuiceStream.collectAsState()
+    val task by juiceTrackerViewModel.currentJuiceStream.collectAsState() // erstat med rigtig viewModel
+  
    BottomSheetScaffold(
        modifier = modifier,
        scaffoldState = sheetScaffoldState,
        sheetContent = {
            BottomSheetContent(
-               task, onCancel, onSubmit, submitButtonLabel
+               task = task,
+               onCancel = onCancel, 
+               onSubmit = onSubmit
            )
        }
    ) {
@@ -87,9 +91,10 @@ fun BottomSheetContent(
         TaskSheetHeader(headerTitle = "Add a task")
         TaskInputForm(
             task = task,
-            onCancel = onCancel,
+            onDismiss = onCancel,
+            dismissButtonLabel = stringResource(R.string.cancel),
             onSubmit = onSubmit,
-            submitButtonLabel = "Add Task"
+            submitButtonLabel = stringResource(R.string.add_task)
         )
     }
 }
@@ -117,7 +122,8 @@ fun TaskSheetHeader(modifier: Modifier = Modifier, headerTitle: String) {
 fun TaskInputForm(
     //taskUiState
     task: Task,
-    onCancel: () -> Unit,
+    onDismiss: () -> Unit,
+    dismissButtonLabel: String,
     onSubmit: () -> Unit,
     submitButtonLabel: String,
     modifier: Modifier = Modifier
@@ -126,33 +132,34 @@ fun TaskInputForm(
         TextInputRow(
             inputLabel = stringResource(R.string.title),
             fieldValue = task.title,
-            onValueChange = //Logik
+            onValueChange = //viewmodel Logik
         )
         DropdownInputRow(
             inputLabel = stringResource(R.string.category),
             fieldValue = task.category,
-            onValueChange = //Logik
+            onValueChange = //viewmodel Logik
         )
 
         DropdownInputRow(
             inputLabel = stringResource(R.string.frequency),
             fieldValue = task.frequency ,
-            onValueChange = //Logik
+            onValueChange = //viewmodel Logik
         )
 
         SliderInputRow(
             inputLabel = stringResource(R.string.difficulty),
             value = task.difficulty,
-            onValueChange = ,//Logik
+            onValueChange = ,//view modelLogik
             minValue = 1,
             maxValue = 10
         )
 
         ButtonRow(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            onCancel = onCancel,
+            onDismiss = onDismiss,
+            dismissButtonLabel = dismissButtonLabel,
             onSubmit = onSubmit,
-            isSubmitButtonEnabled = , //Logik
+            isSubmitButtonEnabled = , //viewmodel Logik
             submitButtonLabel = submitButtonLabel
         )
     }
@@ -252,7 +259,8 @@ fun SliderInputRow(
 */
 @Composable
 fun ButtonRow(
-    onCancel: () -> Unit,
+    onDismiss: () -> Unit,
+    dismissButtonLabel: String,
     onSubmit: () -> Unit,
     isSubmitButtonEnabled: Boolean,
     submitButtonLabel: String,
@@ -264,10 +272,10 @@ fun ButtonRow(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_large))
     ) {
         OutlinedButton(
-            onClick = onCancel,
+            onClick = onDismiss,
             //border = null?
         ) {
-            Text(text = stringResource(R.string.cancel))
+            Text(text = dismissButtonLabel)
         }
         
         Button(
@@ -276,8 +284,6 @@ fun ButtonRow(
         ) {
             Text(text = submitButtonLabel )
         }
-
-
     }
 }
 

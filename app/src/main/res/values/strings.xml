@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mini-project</string>
+    <string name="app_name">Habitize</string>
     <string name="add_task">Add Task</string>
     <string name="cancel">Cancel</string>
     <string name="category">Category</string>
@@ -9,4 +9,6 @@
     <string name="add_a_task">Add a task</string>
     <string name="edit_task">Edit Task</string>
     <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="stats_screen_title">Habit Statistics</string>
 </resources>

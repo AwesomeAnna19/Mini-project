@@ -1,14 +1,29 @@
 package com.example.mini_project.ui.navigation
 
+import androidx.compose.material.BottomSheetScaffoldState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mini_project.data.Screen
 import com.example.mini_project.ui.screens.FullScreen
+import com.example.mini_project.ui.screens.home.HomeScreen
 import com.example.mini_project.ui.screens.home.details.TaskDetailsScreen
 import com.example.mini_project.ui.screens.trophy.TrophyScreenPreview
+import kotlinx.coroutines.launch
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.example.mini_project.ui.screens.StatsRoute
+import com.example.mini_project.ui.screens.home.HomeRoute
+import com.example.mini_project.ui.screens.home.details.TaskDetailsRoute
 
 /**
  *
@@ -20,6 +35,8 @@ fun HabitizeNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+
+
     NavHost(
         navController = navController,
         startDestination = Screen.Tasks.name,
@@ -27,33 +44,32 @@ fun HabitizeNavHost(
     ) {
 
         //Til tasks hjemme skærm
-        composable(route = Screen.Tasks.name) {
-          /* HomeScreen(
-              navigateToTaskEntry = {navController.navigate()},
-              navigateToTaskUpdate = {
-                   navController.navigate("")
-               }
-           )
-
-           */
+        composable(route = HomeRoute.routeString) {
+          HomeScreen(
+              onTabPressed = { screen ->  navController.navigate(screen.name)},
+              ourUiState = ,
+              navigateToTaskDetails = { navController.navigate("${TaskDetailsRoute.routeString}/$it")}
+          )
         }
 
         //Til Tasks detailed skærm
-        composable(route = Screen.TaskDetails.name) {
+        composable(
+            route = TaskDetailsRoute.routeStringWithArguments,
+            arguments = listOf(
+                navArgument(TaskDetailsRoute.taskIdArgument) {
+                    type = NavType.IntType
+                }
+            )
+        ) {
             TaskDetailsScreen(
-                navigateBack = {navController.navigateUp()}
+                navigateBack = { navController.popBackStack()},
+                onNavigateUp = { navController.navigateUp()}
             )
         }
 
-
         //Til stats skærm
-        composable(route = Screen.Stats.name) {
+        composable(route = StatsRoute.routeString) {
             FullScreen()
-        }
-
-        //Til Rewards Skærm
-        composable(route = Screen.Rewards.name) {
-            TrophyScreenPreview()
         }
 
     }

@@ -14,18 +14,24 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,14 +43,16 @@ import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.ui.AppViewModelProvider
 import com.example.mini_project.ui.OurUiState
+import com.example.mini_project.ui.navigation.NavRouteHandler
 import com.example.mini_project.ui.screens.HabitizeBottomBar
 import com.example.mini_project.ui.screens.HabitizeTopBar
+import com.example.mini_project.ui.screens.home.entry.AddTaskBottomSheet
 import com.example.mini_project.ui.screens.home.entry.AddTaskFAB
 import com.example.mini_project.ui.screens.navItemList
 import com.example.mini_project.ui.theme.MiniprojectTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 
 
 //list of ting
@@ -59,49 +67,92 @@ val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Fr
 
 val myTaskList = listOf(myTask, myTask, myTask)
 
+
+object HomeRoute : NavRouteHandler {
+    override val routeString = Screen.Tasks.name
+    override val topBarTitleResource = R.string.app_name
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onTabPressed: ((Screen)-> Unit),
-    ourUiState: OurUiState,
-    navigateToTaskEntry: () -> Unit,
-    navigateToTaskUpdate: (Int) -> Unit
+    ourUiState: OurUiState, // KIG PÅ DEN HER PLS ,
+    navigateToTaskDetails: (Int) -> Unit
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberStandardBottomSheetState(
+            initialValue = SheetValue.Hidden,
+            skipHiddenState = false,
+        )
+    )
+
 
     LaunchedEffect (Unit) {
         withContext(Dispatchers.IO) {
             viewModel.test()
         }
     }
-    Scaffold(
-        topBar = {
-            HabitizeTopBar()
-        },
-        floatingActionButton = {
-            AddTaskFAB(onClick = navigateToTaskEntry) },
-        bottomBar = {
-            HabitizeBottomBar(
-                currentTab = ourUiState.currentScreen ,
-                onTabPressed = onTabPressed,
-                navItemList = navItemList,
-                modifier = Modifier
-                    .fillMaxWidth()
 
-            )
+    AddTaskBottomSheet(
+        sheetScaffoldState = bottomSheetScaffoldState,
+        onCancel = {
+            coroutineScope.launch {
+                bottomSheetScaffoldState.bottomSheetState.hide()
+            }
+        },
+        onSubmit = {
+            //viewModel.saveTask
+            coroutineScope.launch {
+                bottomSheetScaffoldState.bottomSheetState.hide()
+            }
         }
-    ) { contentPadding ->
+    ) {
+        Scaffold(
+            topBar = {
+                HabitizeTopBar(
+                    title = stringResource(HomeRoute.topBarTitleResource),
+                    canNavigateBack = false,
+                    )
+            },
+            floatingActionButton = {
+                AddTaskFAB(
+                    onClick = {
+                        // viewModel.resetCurrentTask
+                        coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.expand() }
+                    }
+                )
+            },
+            bottomBar = {
+                HabitizeBottomBar(
+                    currentTab = ourUiState.currentScreen ,
+                    onTabPressed = onTabPressed,
+                    navItemList = navItemList,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        ) { contentPadding ->
             HomeBody(
                 categoryTitles = "dude",
                 categoryTaskList = myTaskList,
-                onTaskClick = navigateToTaskUpdate,
+                onTaskClick = navigateToTaskDetails,
                 modifier = Modifier
                     .padding(contentPadding)
                     .fillMaxSize()
             )
+        }
     }
 }
+
+
+
+
 @Composable
 fun HomeBody(
     categoryTitles: String,
@@ -122,8 +173,6 @@ fun HomeBody(
             )
         }
     }
-
-
 }
 @Composable
 fun CategoryTaskList(

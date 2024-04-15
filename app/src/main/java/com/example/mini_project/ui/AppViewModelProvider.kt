@@ -28,7 +28,7 @@ object AppViewModelProvider {
             TrophyViewModel(ourApplication().container)
         }
 
-
+        // Initializer for TaskDetailsViewModel
         initializer {
             TaskDetailsViewModel(ourApplication().container)
         }

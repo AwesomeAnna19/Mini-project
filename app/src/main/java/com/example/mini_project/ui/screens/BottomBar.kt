@@ -43,6 +43,7 @@ val navItemList = listOf(
         unselectedIcon = Icons.Outlined.BarChart,
         hasNews = false
     ),
+    /*
     NavItem(
         screen = Screen.Rewards,
         title = "Rewards",
@@ -50,6 +51,7 @@ val navItemList = listOf(
         unselectedIcon = Icons.Outlined.Celebration,
         hasNews = false
     )
+     */
 )
 
 
