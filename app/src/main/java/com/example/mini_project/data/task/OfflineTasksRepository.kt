@@ -3,9 +3,9 @@ package com.example.mini_project.data.task
 import kotlinx.coroutines.flow.Flow
 
 class OfflineTasksRepository(private val taskDao: TaskDao) : TasksRepository {
-    override fun getTaskList(id: Int): Flow<Task> = taskDao.getTask(id)
+    override fun getTask(id: Int): Flow<Task> = taskDao.getTask(id)
 
-    override fun getTaskByFrequencyList(frequency: Frequency): Flow<List<Task>> = taskDao.getTasksByFrequency(frequency)
+    override fun getTaskByFrequencyList(): Flow<List<Task>> = taskDao.getTasksByFrequency()
 
     override fun filterCategoriesStreaksStats(category: Categories): Flow<List<Task>> = taskDao.getTasksByCategory(category)
 

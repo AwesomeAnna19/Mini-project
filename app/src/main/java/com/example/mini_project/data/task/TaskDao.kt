@@ -16,8 +16,8 @@ interface TaskDao {
     fun getTask(id: Int): Flow<Task>
 
     /*Fra Miro: Select og group by reminder schedule*/
-    @Query("SELECT * from tasks WHERE frequency = :frequency ORDER BY id ASC")
-    fun getTasksByFrequency(frequency: Frequency): Flow<List<Task>>
+    @Query("SELECT * from tasks ORDER BY frequency ASC")
+    fun getTasksByFrequency(): Flow<List<Task>>
 
 
     /*Fra Miro: filter based on category*/

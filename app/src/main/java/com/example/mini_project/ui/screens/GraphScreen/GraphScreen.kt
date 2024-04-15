@@ -1,5 +1,7 @@
-package com.example.mini_project.ui.screens
+package com.example.mini_project.ui.screens.GraphScreen
 
+import android.util.Log
+import android.view.SurfaceControl.Transaction
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,6 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,31 +30,50 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import co.yml.charts.common.extensions.isNotNull
+import com.example.mini_project.data.badge.Badge
+import com.example.mini_project.data.category.Category
+import com.example.mini_project.data.task.Categories
+import com.example.mini_project.ui.AppViewModelProvider
+import com.example.mini_project.ui.screens.home.HomeViewModel
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatrick.vico.compose.chart.CartesianChartHost
 import com.patrykandpatrick.vico.compose.chart.layer.rememberColumnCartesianLayer
 import com.patrykandpatrick.vico.compose.chart.rememberCartesianChart
 import com.patrykandpatrick.vico.core.axis.AxisPosition
+import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.axis.formatter.DecimalFormatAxisValueFormatter
 import com.patrykandpatrick.vico.core.model.CartesianChartModel
 import com.patrykandpatrick.vico.core.model.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.model.ColumnCartesianLayerModel
+import com.patrykandpatrick.vico.core.model.ExtraStore
 import com.patrykandpatrick.vico.core.model.columnSeries
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
+import org.jetbrains.annotations.Nullable
+import java.lang.NullPointerException
 import java.math.RoundingMode
 
 @Composable
-fun FullScreen() {
-    //var ShowingTask by remember {mutableStateOf(false)}
-    var showingCategory by remember {mutableStateOf(false)}
+fun FullScreen(
+    viewModel: GraphViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
+    val uiState by viewModel.graphUiState.collectAsState()
+    val windowUiState by viewModel.graphWindowUIState.collectAsState()
+
+    Log.e(null, "This many tasks in list: ${uiState.taskList.count()}")
 
     Column(verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize(1f)) {
         Column(
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxHeight(0.8f).background(color = Color.LightGray)
+            modifier = Modifier
+                .fillMaxHeight(0.8f)
+                .background(color = Color.LightGray)
         ) {
 
             Row(
@@ -62,21 +84,21 @@ fun FullScreen() {
                     .padding(2.dp)
             ) {
                 BoxButton(
-                    onClick = {showingCategory = false},
+                    onClick = {viewModel.switchGraphViewed()},
                     text = "Show tasks",
-                    enabled = showingCategory,
+                    enabled = windowUiState.showingCategories,
                     modifier = Modifier
-                        .background(if(!showingCategory) Color.DarkGray else Color.Gray)
+                        .background(if (!windowUiState.showingCategories) Color.DarkGray else Color.Gray)
                         .fillMaxHeight(1f)
                         .fillMaxWidth(0.3f)
                 )
 
                 BoxButton(
-                    onClick = {showingCategory = true},
+                    onClick = {viewModel.switchGraphViewed()},
                     text = "Show categories",
-                    enabled = !showingCategory,
+                    enabled = !windowUiState.showingCategories,
                     modifier = Modifier
-                        .background(if(showingCategory) Color.DarkGray else Color.Gray)
+                        .background(if (windowUiState.showingCategories) Color.DarkGray else Color.Gray)
                         .fillMaxHeight(1f)
                         .fillMaxWidth(0.4f)
                 )
@@ -104,13 +126,8 @@ fun FullScreen() {
                                 .fillMaxHeight(1f)
                         ) {
                             GraphCard(
-                                if (showingCategory) {
-                                    createModelFromLists(listOf(1, 2, 3, 4, 5), listOf(1, 2, 3, 4, 5))
-                                }
-                                else
-                                {
-                                    createModelFromLists(listOf(2, 5, 3, 1, 9), listOf(6, 22, 5, 8, 10))
-                                }
+                                windowUiState,
+                                viewModel
                             )
                         }
 
@@ -145,9 +162,30 @@ fun BoxButton(text:String, onClick: () -> Unit, enabled:Boolean, modifier:Modifi
 
 
 @Composable
-fun GraphCard(model: CartesianChartModel) {
+fun GraphCard(windowUIState: GraphWindowUIState, viewModel: GraphViewModel) {
             Card(shape = RectangleShape, modifier = Modifier.padding(10.dp)) {
-                    TimeLineGraph(model)
+
+
+                val listKey = ExtraStore.Key<List<String>>()
+
+                val modelProducer = if (windowUIState.showingCategories) {
+                    viewModel.tryCategoryGraph(listKey = listKey)
+                    }
+                    else {
+                        viewModel.tryTaskGraph(listKey = listKey)
+                    }
+
+                val formatter = AxisValueFormatter<AxisPosition.Horizontal.Bottom> {x, values, _ ->
+                    try {
+                        values.model.extraStore[listKey][x.toInt()]
+                    }
+                    catch (e: NullPointerException)
+                    {
+                        ""
+                    }
+                }
+                    TimeLineGraph(modelProducer = modelProducer, formatter = formatter)
+
             }
 }
 
@@ -167,13 +205,21 @@ fun TopThreeList(modifier:Modifier) {
 
 }
 
-fun createModelFromLists(x:List<Number>, y:List<Number>) : CartesianChartModel {
 
-    return CartesianChartModel(
-        ColumnCartesianLayerModel.build{
-            series(x, y)
-        }
-    )
+@Composable
+fun TimeLineGraph(
+    modelProducer: CartesianChartModelProducer,
+    formatter: AxisValueFormatter<AxisPosition.Horizontal.Bottom> = DecimalFormatAxisValueFormatter<AxisPosition.Horizontal.Bottom>()
+) {
+    Log.d(null, "TimeLineGraphComposed")
+
+    CartesianChartHost(chart = rememberCartesianChart(
+        rememberColumnCartesianLayer(),
+        startAxis = rememberStartAxis(),
+        bottomAxis = rememberBottomAxis(valueFormatter = formatter)
+        ),
+        modelProducer,
+        modifier = Modifier.fillMaxHeight(1f))
 
 }
 
@@ -186,66 +232,6 @@ fun TaskCard(/*task:Task,*/ modifier: Modifier) {
             Text(text = "Streak: x", modifier = Modifier.padding(4.dp))
         }
     }
-}
-
-
-@Composable
-fun TimeLineGraph(
-    //modelProducer: CartesianChartModelProducer
-    model:CartesianChartModel
-) {
-
-    val modelProducer = remember {CartesianChartModelProducer.build()}
-
-    LaunchedEffect(Unit) {
-        withContext(Dispatchers.Default) {
-            while (isActive) {
-                modelProducer.tryRunTransaction {
-                    columnSeries {
-                        series(x = listOf(1, 2, 3, 4, 5, 6, 2), y = listOf(2, 3, 4, 5, 6, 7, 8))
-                    }
-                }
-                //delay(200)
-            }
-        }
-    }
-
-    val formatter = DecimalFormatAxisValueFormatter<AxisPosition.Vertical.Start>(roundingMode = RoundingMode.CEILING)
-    CartesianChartHost(chart = rememberCartesianChart(
-        rememberColumnCartesianLayer(),
-        startAxis = rememberStartAxis(valueFormatter = formatter),
-        bottomAxis = rememberBottomAxis()
-        ),
-        model,
-        modifier = Modifier.fillMaxHeight(1f))
-
-}
-
-@Composable
-fun GraphArea(
-    modelProducer: CartesianChartModelProducer
-) {
-
-    CartesianChartHost(chart = rememberCartesianChart(
-        rememberColumnCartesianLayer(),
-        startAxis = rememberStartAxis(),
-        bottomAxis = rememberBottomAxis(),
-    ), modelProducer)
-
-}
-
-@Composable
-fun templateChart() {
-    val modelProducer = remember { CartesianChartModelProducer.build() }
-    LaunchedEffect(Unit) { modelProducer.tryRunTransaction { columnSeries { series(4, 12, 8, 16) } } }
-    CartesianChartHost(
-        rememberCartesianChart(
-            rememberColumnCartesianLayer(),
-            startAxis = rememberStartAxis(),
-            bottomAxis = rememberBottomAxis(),
-        ),
-        modelProducer,
-    )
 }
 
 @Preview(showBackground = true)

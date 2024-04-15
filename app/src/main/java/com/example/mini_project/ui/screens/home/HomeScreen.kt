@@ -32,8 +32,16 @@ import com.example.mini_project.data.category.Category
 import com.example.mini_project.data.task.Categories
 import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
+<<<<<<< Updated upstream
 import com.example.mini_project.ui.screens.LifeRPGBottomBar
 import com.example.mini_project.ui.screens.LifeRPGTopBar
+=======
+import com.example.mini_project.ui.AppViewModelProvider
+import com.example.mini_project.ui.OurUiState
+import com.example.mini_project.ui.screens.HabitizeBottomBar
+import com.example.mini_project.ui.screens.HabitizeTopBar
+import com.example.mini_project.ui.screens.navItemList
+>>>>>>> Stashed changes
 import com.example.mini_project.ui.theme.MiniprojectTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +56,7 @@ import kotlin.coroutines.CoroutineContext
 //inventory row
 
 
-val myCategory = Category(name = "Health", color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
+val myCategory = Category(name = Categories.Health, color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
 val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Frequency.Monthly, streak = 0, category = Categories.Health)
 
 val myTaskList = listOf(myTask, myTask, myTask)
@@ -58,18 +66,33 @@ val myTaskList = listOf(myTask, myTask, myTask)
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.factory)
 ) {
+<<<<<<< Updated upstream
     LaunchedEffect (Unit) {
         withContext(Dispatchers.IO) {
             viewModel.test()
         }
     }
+=======
+    //val homeUiState by viewModel.homeUiState.collectAsState()
+>>>>>>> Stashed changes
     Scaffold(
         topBar = {
             LifeRPGTopBar()
         },
         floatingActionButton = { AddTaskFAB(onClick = { /*TODO*/ }) },
         bottomBar = {
+<<<<<<< Updated upstream
             LifeRPGBottomBar()
+=======
+            HabitizeBottomBar(
+                currentTab = ourUiState.currentScreen ,
+                onTabPressed = onTabPressed,
+                navItemList = navItemList,
+                modifier = Modifier
+                    .fillMaxWidth()
+
+            )
+>>>>>>> Stashed changes
         }
     ) { contentPadding ->
             HomeBody(

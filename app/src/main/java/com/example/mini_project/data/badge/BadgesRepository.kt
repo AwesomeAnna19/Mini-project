@@ -4,11 +4,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface BadgesRepository {
 
-    fun getBadgeList(id: Int): Flow<List<Badge>>
+    fun getBadgeList(): Flow<List<Badge>>
 
     fun sortBadgesByDoneList(): Flow<List<Badge>>
 
-    fun sortBadgesByStatProgress(maximumProgress: Int): Flow<List<Badge>>
+    fun sortBadgesByStatProgress(): Flow<List<Badge>>
 
     suspend fun updateBadge(badge: Badge)
+
+    suspend fun insertBadge(badge: Badge)
 }

@@ -1,13 +1,14 @@
 package com.example.mini_project.data
 
 import android.content.Context
-import android.database.DatabaseUtils
+import android.content.res.loader.AssetsProvider
 import android.util.Log
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.RoomMasterTable
 import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.mini_project.data.badge.Badge
 import com.example.mini_project.data.badge.BadgeDao
 import com.example.mini_project.data.category.Category
@@ -18,8 +19,8 @@ import com.example.mini_project.data.task.TaskDao
 //Database annotation for the abstract class directly below parameters
 @Database (
     entities = [Task::class, Category::class, Badge:: class],   //List of all entities/tables we have
-    version = 3,               //Whenever you change the schema of the database table, you have to increase the version number
-    exportSchema = false       //To keep schema version history backups or not
+    version = 1,               //Whenever you change the schema of the database table, you have to increase the version number
+    exportSchema = true       //To keep schema version history backups or not
 )
 abstract class OurDatabase : RoomDatabase() {
 
@@ -51,11 +52,29 @@ abstract class OurDatabase : RoomDatabase() {
                 // Builds a Room database instance using the input application context and database class
                 // Database name is "app_database". CHANGE IT!
                 Room.databaseBuilder(context, OurDatabase::class.java, "app_database")
-                    .fallbackToDestructiveMigration()
-                    //.fallbackToDestructiveMigration()//REVISIT THIS! DESTROYS & REBUILDS the database, which means that the task data is lost. Migration strategy required, when schema changes what happens?
+                    .createFromAsset("Database/app_database.db", (testPreCallback()))
                     .build()  //Creates the database instance
-                    .also { Instance = it; Log.e("Database", "Initialized") }  //Keeps a reference to the recently created db instance.
+                    .also { Instance = it; Log.e("Database", "Initialized")}  //Keeps a reference to the recently created db instance.
             }
         }
+    }
+}
+
+class testPreCallback() : RoomDatabase.PrepackagedDatabaseCallback() {
+    override fun onOpenPrepackagedDatabase(db: SupportSQLiteDatabase) {
+        super.onOpenPrepackagedDatabase(db)
+
+        Log.e("Database", "DatabaseOpened")
+        Log.e("Database", "path: ${db.path}")
+        Log.e("Database", "Is integrity ok?: ${db.isDatabaseIntegrityOk}")
+
+    }
+
+}
+
+class TestMigration(start : Int, end : Int) : Migration (start, end) {
+
+    override fun migrate(db: SupportSQLiteDatabase) {
+        Log.e("Database", "Used my migration")
     }
 }
