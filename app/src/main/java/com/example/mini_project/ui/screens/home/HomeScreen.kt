@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.mini_project.R
 import com.example.mini_project.data.Screen
 import com.example.mini_project.data.category.Category
@@ -42,7 +43,6 @@ import com.example.mini_project.data.task.Categories
 import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.ui.AppViewModelProvider
-import com.example.mini_project.ui.OurUiState
 import com.example.mini_project.ui.navigation.NavRouteHandler
 import com.example.mini_project.ui.screens.HabitizeBottomBar
 import com.example.mini_project.ui.screens.HabitizeTopBar
@@ -78,8 +78,7 @@ object HomeRoute : NavRouteHandler {
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    onTabPressed: ((Screen)-> Unit),
-    ourUiState: OurUiState, // KIG PÅ DEN HER PLS ,
+    navController: NavHostController,
     navigateToTaskDetails: (Int) -> Unit
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
@@ -130,9 +129,8 @@ fun HomeScreen(
             },
             bottomBar = {
                 HabitizeBottomBar(
-                    currentTab = ourUiState.currentScreen ,
-                    onTabPressed = onTabPressed,
                     navItemList = navItemList,
+                    navController = navController,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
@@ -164,7 +162,7 @@ fun HomeBody(
         modifier = modifier,
         contentPadding = PaddingValues(1.dp)
     ) {
-        items(items = categoryTaskList) {item ->
+        items(items = categoryTaskList) {
             CategoryTaskList(
                 categoryTitle = categoryTitles,
                 taskList = categoryTaskList,
