@@ -5,13 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CategoriesRepository {
 
-<<<<<<< Updated upstream
-    fun getCategoryList(name: String): Flow<List<Category>>
-
-    //fun categoryReminderSchedulesList(name: String): Flow<List<Category>>
-=======
-    fun getCategory(name: Categories): Flow<Category>
-
     fun listOfAllCategoriesSortedByCurrentLevel(): Flow<List<Category>>
 
     fun listOfAllCategoriesSortedByCurrentLevel(take : Int): Flow<List<Category>>
@@ -19,6 +12,5 @@ interface CategoriesRepository {
     suspend fun updateCategory(name: Category)
 
     suspend fun insertCategory(category: Category)
->>>>>>> Stashed changes
 
 }

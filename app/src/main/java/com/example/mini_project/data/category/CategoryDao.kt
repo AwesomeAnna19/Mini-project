@@ -11,15 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CategoryDao {
 
-    /*Fra Miro: Select all based on id -> instans af klassen spyttes ud*/
-    @Query("SELECT * from categories WHERE name = :name")
-<<<<<<< Updated upstream
-    fun getCategory(name: Categories): Flow<Categories>
-
     /*Fra Miro: Select og group by reminder schedule*/
-
-=======
-
     /*Fra Miro: Get a list of all categories that is sorted by their current level
     -> so the category with the highest level is at the top of the list*/
     @Query("SELECT * from categories ORDER BY currentLevel DESC, currentXp/xpRequiredForLevelUp")
@@ -34,6 +26,5 @@ interface CategoryDao {
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(category: Category)
->>>>>>> Stashed changes
 
 }

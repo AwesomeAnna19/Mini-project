@@ -36,16 +36,11 @@ import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.ui.AppViewModelProvider
 import com.example.mini_project.ui.OurUiState
-<<<<<<< Updated upstream
-import com.example.mini_project.ui.screens.LifeRPGBottomBar
 import com.example.mini_project.ui.screens.HabitizeTopBar
 import com.example.mini_project.ui.screens.navItemList
-import com.example.mini_project.ui.screens.LifeRPGTopBar
-=======
 import com.example.mini_project.ui.screens.HabitizeBottomBar
 import com.example.mini_project.ui.screens.HabitizeTopBar
 import com.example.mini_project.ui.screens.navItemList
->>>>>>> Stashed changes
 import com.example.mini_project.ui.theme.MiniprojectTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -84,7 +79,7 @@ fun HomeScreen(
         },
         floatingActionButton = { AddTaskFAB(onClick = { /*TODO*/ }) },
         bottomBar = {
-            LifeRPGBottomBar(
+            HabitizeBottomBar(
                 currentTab = ourUiState.currentScreen ,
                 onTabPressed = onTabPressed,
                 navItemList = navItemList,

@@ -4,21 +4,12 @@ import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.room.DatabaseConfiguration
 import com.example.mini_project.OurApplication
-=======
->>>>>>> Error-branch
-import com.example.mini_project.data.AppContainer
-import com.example.mini_project.data.task.Task
-<<<<<<< HEAD
 import com.example.mini_project.data.task.TaskDao
-=======
 import androidx.lifecycle.viewModelScope
 import androidx.room.DatabaseConfiguration
 import com.example.mini_project.data.AppContainer
@@ -27,9 +18,6 @@ import com.example.mini_project.data.task.Categories
 import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import kotlinx.coroutines.Dispatchers
->>>>>>> Stashed changes
-=======
->>>>>>> Error-branch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -50,7 +38,6 @@ Any changes to the UI state are immediately reflected in the UI
  */
 
 class HomeViewModel(private val container: AppContainer): ViewModel() {
-<<<<<<< Updated upstream
     private val _uiState = MutableStateFlow(HomeUiState())
 
 
@@ -58,9 +45,8 @@ class HomeViewModel(private val container: AppContainer): ViewModel() {
         _uiState.asStateFlow()
 
     suspend fun test() {
-        container.tasksRepository.insertTask(Task(1, "Work", 5, "Daily", 2))
+        container.tasksRepository.insertTask(Task(1, "Work", 5, Frequency.Daily, category = Categories.Health, streak = 2))
     }
-=======
     //private val _uiState = MutableStateFlow(HomeUiState())
     //val homeUiState: StateFlow<HomeUiState> =
        // _uiState.asStateFlow()
@@ -84,7 +70,6 @@ class HomeViewModel(private val container: AppContainer): ViewModel() {
         )
 
     }*/
->>>>>>> Stashed changes
 
     /*
     companion object {

@@ -24,15 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-                    HomeScreen()
-=======
                     FullScreen()
->>>>>>> Stashed changes
-=======
-                   // HomeScreen()
->>>>>>> Error-branch
                 }
             }
         }
