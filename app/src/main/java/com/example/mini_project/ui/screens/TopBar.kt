@@ -14,7 +14,7 @@ import com.example.mini_project.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LifeRPGTopBar(modifier: Modifier = Modifier) {
+fun HabitizeTopBar(modifier: Modifier = Modifier) {
     CenterAlignedTopAppBar(
         modifier = modifier,
         colors = TopAppBarDefaults.largeTopAppBarColors(

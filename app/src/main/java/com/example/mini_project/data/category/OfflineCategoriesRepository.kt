@@ -1,8 +1,10 @@
 package com.example.mini_project.data.category
 
+import com.example.mini_project.data.task.Categories
 import kotlinx.coroutines.flow.Flow
 
 class OfflineCategoriesRepository(private val categoryDao: CategoryDao) : CategoriesRepository {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     override fun getCategoryList(name: String): Flow<List<Category>> = categoryDao.getCategory(name)
 
@@ -17,4 +19,11 @@ class OfflineCategoriesRepository(private val categoryDao: CategoryDao) : Catego
 
     override suspend fun insertCategory(category: Category) = categoryDao.insert(category)
 >>>>>>> Stashed changes
+=======
+    override fun getCategoryList(name: Categories): Flow<Categories> = categoryDao.getCategory(name)
+
+    override fun listOfAllCategoriesSortedByCurrentLevel(): Flow<List<Categories>> = categoryDao.listOfAllCategoriesSortedByCurrentLevel()
+
+    override suspend fun updateCategories(name: Categories) = categoryDao.update(name)
+>>>>>>> Error-branch
 }

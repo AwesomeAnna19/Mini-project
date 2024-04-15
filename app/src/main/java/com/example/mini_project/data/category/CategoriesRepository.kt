@@ -1,5 +1,6 @@
 package com.example.mini_project.data.category
 
+import com.example.mini_project.data.task.Categories
 import kotlinx.coroutines.flow.Flow
 
 interface CategoriesRepository {

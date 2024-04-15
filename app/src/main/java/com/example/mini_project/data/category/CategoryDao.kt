@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import com.example.mini_project.data.task.Categories
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -12,12 +14,11 @@ interface CategoryDao {
     /*Fra Miro: Select all based on id -> instans af klassen spyttes ud*/
     @Query("SELECT * from categories WHERE name = :name")
 <<<<<<< Updated upstream
-    fun getCategory(name: String): Flow<List<Category>>
+    fun getCategory(name: Categories): Flow<Categories>
 
     /*Fra Miro: Select og group by reminder schedule*/
 
 =======
-    fun getCategory(name: Categories): Flow<Category>
 
     /*Fra Miro: Get a list of all categories that is sorted by their current level
     -> so the category with the highest level is at the top of the list*/

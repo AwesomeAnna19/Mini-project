@@ -7,7 +7,9 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.List
+import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -25,8 +27,6 @@ data class NavItem (
     val unselectedIcon: ImageVector,
     val hasNews: Boolean
 )
-
-enum class NavItemType
 
 val navItemList = listOf(
     NavItem(
@@ -54,17 +54,23 @@ val navItemList = listOf(
 
 
 //Funktionalitet mangler
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LifeRPGBottomBar(
-    //currentTab: Screen,              //Den bottom nav tab man er på lige nu
-  //  onTabPressed: ((Screen)-> Unit), //Når man trykker på en tab
+fun HabitizeBottomBar(
+    currentTab: Screen,              //Den bottom nav tab man er på lige nu
+    onTabPressed: ((Screen)-> Unit), //Når man trykker på en tab
+    navItemList: List<NavItem>,
+  //  navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(modifier = modifier) {
         for (navItem in navItemList) {
             NavigationBarItem(
-                selected = false,//currentTab == navItem.screen, //En navigation bar item er selected hvis den nuværende tab er lig den skærmen på den navitem, som i øjeblikket loopes over
-                onClick = {},//onTabPressed(navItem.screen)},
+                selected = currentTab == navItem.screen, //En navigation bar item er selected hvis den nuværende tab er lig den skærmen på den navitem, som i øjeblikket loopes over
+                onClick = {
+                        onTabPressed(navItem.screen)
+                     //    navController.navigate(navItem.screen.name)
+                    },
                 label = {
                     Text(text = navItem.title)
                 },
@@ -72,13 +78,15 @@ fun LifeRPGBottomBar(
                     BadgedBox(
                         badge ={
                             if(navItem.hasNews){
-                                //To do
+                                Badge {
+                                }
                             }
 
                         }
                     ) {
                         Icon(
-                            imageVector = navItem.unselectedIcon,
+                            imageVector = if(currentTab == navItem.screen) {
+                            navItem.selectedIcon } else navItem.unselectedIcon,
                             contentDescription = navItem.title
                         )
 

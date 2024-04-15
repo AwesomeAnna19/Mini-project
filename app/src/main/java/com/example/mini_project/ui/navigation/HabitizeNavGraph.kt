@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mini_project.data.Screen
 import com.example.mini_project.ui.screens.GraphScreen.FullScreen
+import com.example.mini_project.ui.screens.home.HomeScreen
 import com.example.mini_project.ui.screens.trophy.TrophyScreenPreview
 
 /**
