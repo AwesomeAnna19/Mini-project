@@ -52,7 +52,7 @@ import kotlinx.coroutines.withContext
 //inventory row
 
 
-val myCategory = Category(name = "Health", color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
+val myCategory = Category(Categories.Health, color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
 val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Frequency.Monthly, streak = 0, category = Categories.Health)
 
 val myTaskList = listOf(myTask, myTask, myTask)
