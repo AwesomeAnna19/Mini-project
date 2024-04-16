@@ -11,4 +11,6 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="stats_screen_title">Habit Statistics</string>
+    <string name="quote_of_the_day">You are doing great, lad!</string>
+    <string name="quote_of_the_day_title">Quote of the Day:</string>
 </resources>

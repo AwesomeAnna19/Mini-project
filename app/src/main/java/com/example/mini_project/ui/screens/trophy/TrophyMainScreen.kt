@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,8 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mini_project.R
 import com.example.mini_project.ui.AppViewModelProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Preview(showSystemUi = true)
 @Composable
@@ -75,5 +72,7 @@ fun TrophyLazyGrid (
 
 @Composable
 fun TrophyItems() {
+    Column {
 
+    }
 }

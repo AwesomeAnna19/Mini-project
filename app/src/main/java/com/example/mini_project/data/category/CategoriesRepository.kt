@@ -5,10 +5,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface CategoriesRepository {
 
-    fun getCategoryList(name: Categories): Flow<Categories>
+    fun listOfAllCategoriesSortedByCurrentLevel(): Flow<List<Category>>
 
-    fun listOfAllCategoriesSortedByCurrentLevel(): Flow<List<Categories>>
+    fun listOfAllCategoriesSortedByCurrentLevel(take : Int): Flow<List<Category>>
 
-    suspend fun updateCategories(name: Categories)
+    suspend fun updateCategory(name: Category)
+
+    suspend fun insertCategory(category: Category)
 
 }

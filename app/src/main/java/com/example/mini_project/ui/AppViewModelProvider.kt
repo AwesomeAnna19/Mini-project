@@ -1,12 +1,14 @@
 package com.example.mini_project.ui
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.mini_project.OurApplication
+import com.example.mini_project.ui.screens.GraphScreen.GraphViewModel
 import com.example.mini_project.ui.screens.home.HomeViewModel
 import com.example.mini_project.ui.screens.home.details.TaskDetailsViewModel
 import com.example.mini_project.ui.screens.trophy.TrophyViewModel
@@ -28,9 +30,13 @@ object AppViewModelProvider {
             TrophyViewModel(ourApplication().container)
         }
 
+        initializer {
+            GraphViewModel(ourApplication().container)
+        }
+
         // Initializer for TaskDetailsViewModel
         initializer {
-            TaskDetailsViewModel(ourApplication().container)
+            TaskDetailsViewModel(savedStateHandle = SavedStateHandle(), ourApplication().container)
         }
     }
 }

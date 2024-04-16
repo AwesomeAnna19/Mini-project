@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
+import com.example.mini_project.ui.screens.GraphScreen.StatsRoute
 import com.example.mini_project.ui.screens.home.HomeRoute
 
 

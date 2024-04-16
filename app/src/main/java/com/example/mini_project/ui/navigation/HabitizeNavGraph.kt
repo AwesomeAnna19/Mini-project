@@ -6,9 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.mini_project.data.Screen
+import com.example.mini_project.ui.screens.GraphScreen.FullScreen
 import androidx.navigation.navArgument
-import com.example.mini_project.ui.screens.FullScreen
-import com.example.mini_project.ui.screens.StatsRoute
+import com.example.mini_project.ui.screens.GraphScreen.StatsRoute
 import com.example.mini_project.ui.screens.home.HomeRoute
 import com.example.mini_project.ui.screens.home.HomeScreen
 import com.example.mini_project.ui.screens.home.details.TaskDetailsRoute
@@ -40,6 +41,10 @@ fun HabitizeNavHost(
           )
         }
 
+        composable(route = StatsRoute.routeString) {
+            FullScreen(navController = navController)
+        }
+
         //Til Tasks detailed skærm
         composable(
             route = TaskDetailsRoute.routeStringWithArguments,
@@ -56,10 +61,6 @@ fun HabitizeNavHost(
             )
         }
 
-        //Til stats skærm
-        composable(route = StatsRoute.routeString) {
-            FullScreen()
-        }
 
     }
 }

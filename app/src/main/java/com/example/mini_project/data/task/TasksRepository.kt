@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface TasksRepository {
 
-    fun getTaskList(id: Int): Flow<Task>
+    fun getTask(id: Int): Flow<Task>
 
-    fun getTaskByFrequencyList(frequency: Frequency): Flow<List<Task>>
+    fun getTaskByFrequencyList(): Flow<List<Task>>
 
     fun filterCategoriesStreaksStats(category: Categories): Flow<List<Task>>
 

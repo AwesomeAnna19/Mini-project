@@ -92,9 +92,12 @@ fun HomeScreen(
     )
 
 
+
+
     LaunchedEffect (Unit) {
         withContext(Dispatchers.IO) {
             viewModel.test()
+            //bottomSheetScaffoldState.bottomSheetState.hide()
         }
     }
 

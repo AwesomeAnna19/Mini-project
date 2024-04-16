@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.mini_project.ui.screens.home.HomeScreen
+import com.example.mini_project.ui.screens.GraphScreen.FullScreen
 import com.example.mini_project.ui.theme.MiniprojectTheme
 
 class MainActivity : ComponentActivity() {
