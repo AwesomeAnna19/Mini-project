@@ -100,7 +100,7 @@ fun HomeScreen(
             //bottomSheetScaffoldState.bottomSheetState.hide()
         }
     }
-
+/*
     AddTaskBottomSheet(
         sheetScaffoldState = bottomSheetScaffoldState,
         onCancel = {
@@ -151,10 +151,60 @@ fun HomeScreen(
     }
 }
 
+ */
+
+    Scaffold(
+        topBar = {
+            HabitizeTopBar(
+                title = stringResource(HomeRoute.topBarTitleResource),
+                canNavigateBack = false,
+            )
+        },
+        floatingActionButton = {
+            AddTaskFAB(
+                onClick = {
+                    // viewModel.resetCurrentTask
+                    coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.expand() }
+                }
+            )
+        },
+        bottomBar = {
+            HabitizeBottomBar(
+                navItemList = navItemList,
+                navController = navController,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
+    ){ contentPadding ->
+        AddTaskBottomSheet(
+            sheetScaffoldState = bottomSheetScaffoldState,
+            onCancel = {
+                coroutineScope.launch {
+                    bottomSheetScaffoldState.bottomSheetState.hide()
+                }
+            },
+            onSubmit = {
+                //viewModel.saveTask
+                coroutineScope.launch {
+                    bottomSheetScaffoldState.bottomSheetState.hide()
+                }
+            }
+        ) {
+            HomeBody(
+                categoryTitles = "dude",
+                categoryTaskList = myTaskList,
+                onTaskClick = navigateToTaskDetails,
+                modifier = Modifier
+                    .padding(contentPadding)
+                    .fillMaxSize()
+            )
+        }
+    }
+}
 
 
-
-@Composable
+    @Composable
 fun HomeBody(
     categoryTitles: String,
     categoryTaskList: List<Task>,

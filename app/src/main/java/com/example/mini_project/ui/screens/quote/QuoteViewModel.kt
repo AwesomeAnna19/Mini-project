@@ -13,7 +13,7 @@ import com.example.mini_project.network.ZenQuotesApiService
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-
+/*
 /**
  * UI state for the Quote screen.
  * Loading - app is waiting for data.
@@ -77,3 +77,5 @@ class QuoteViewModel : ViewModel() {
         }
     }
 }
+
+ */

@@ -129,7 +129,7 @@ fun TaskInputForm(
     submitButtonLabel: String,
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column (modifier.padding(dimensionResource(R.dimen.padding_small))) {
         TextInputRow(
             inputLabel = stringResource(R.string.title),
             fieldValue = task.title,
@@ -298,7 +298,7 @@ fun InputRow(
     content: @Composable () -> Unit
 ) {
     Row (
-        modifier = modifier,//.padding(bottom = dimensionResource(R.dimen.padding_small))
+        modifier = modifier.padding(bottom = dimensionResource(R.dimen.padding_small)),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -307,7 +307,7 @@ fun InputRow(
             fontWeight = FontWeight.SemiBold,
             modifier = modifier
                 .weight(1f)
-                //.padding(end = dimensionResource(R.dimen.padding_small))
+                .padding(end = dimensionResource(R.dimen.padding_small))
         )
 
         Box(modifier = Modifier.weight(2f)) {

@@ -1,7 +1,7 @@
 package com.example.mini_project.ui.screens.quote
 
 import androidx.compose.runtime.Composable
-
+/*
 @Composable
 fun QuoteScreen(
     quoteUiState: QuoteUiState,
@@ -17,3 +17,5 @@ fun QuoteScreen(
 fun LoadingScreen() {
 
 }
+
+*/

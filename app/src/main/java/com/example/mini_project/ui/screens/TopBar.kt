@@ -30,7 +30,7 @@ fun HabitizeTopBar(
     CenterAlignedTopAppBar(
         title = { Text(title) },
         colors = TopAppBarDefaults.largeTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
-        modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_medium)),
+        modifier = modifier,
         // scrollBehavior = scrollBehavior,
         navigationIcon = {
             if (canNavigateBack) {
