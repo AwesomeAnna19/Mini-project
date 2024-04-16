@@ -1,6 +1,7 @@
 package com.example.mini_project.ui
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -35,7 +36,7 @@ object AppViewModelProvider {
 
         // Initializer for TaskDetailsViewModel
         initializer {
-            TaskDetailsViewModel(ourApplication().container)
+            TaskDetailsViewModel(savedStateHandle = SavedStateHandle(), ourApplication().container)
         }
     }
 }

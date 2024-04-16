@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mini_project.R
+import com.example.mini_project.data.task.Categories
 import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 
@@ -71,7 +72,7 @@ fun AddTaskBottomSheet(
        scaffoldState = sheetScaffoldState,
        sheetContent = {
            BottomSheetContent(
-               task = task,
+               task = Task(title = "Boobs", difficulty = 5, frequency = Frequency.Weekly, streak = 5, category = Categories.Health),
                onCancel = onCancel, 
                onSubmit = onSubmit
            )

@@ -41,6 +41,10 @@ fun HabitizeNavHost(
           )
         }
 
+        composable(route = StatsRoute.routeString) {
+            FullScreen(navController = navController)
+        }
+
         //Til Tasks detailed skærm
         composable(
             route = TaskDetailsRoute.routeStringWithArguments,
@@ -57,10 +61,6 @@ fun HabitizeNavHost(
             )
         }
 
-        //Til stats skærm
-        composable(route = StatsRoute.routeString) {
-            FullScreen()
-        }
 
     }
 }
