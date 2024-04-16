@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
+} 
 
 @Preview(showSystemUi = true)
 @Composable
