@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.mini_project.OurApplication
 import com.example.mini_project.ui.screens.GraphScreen.GraphViewModel
 import com.example.mini_project.ui.screens.home.HomeViewModel
+import com.example.mini_project.ui.screens.home.details.TaskDetailsViewModel
 import com.example.mini_project.ui.screens.trophy.TrophyViewModel
 
 
@@ -32,6 +33,10 @@ object AppViewModelProvider {
             GraphViewModel(ourApplication().container)
         }
 
+        // Initializer for TaskDetailsViewModel
+        initializer {
+            TaskDetailsViewModel(ourApplication().container)
+        }
     }
 }
 

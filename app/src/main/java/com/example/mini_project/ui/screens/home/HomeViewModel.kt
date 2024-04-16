@@ -1,5 +1,13 @@
 package com.example.mini_project.ui.screens.home
 
+import androidx.compose.material.BottomSheetScaffoldState
+import androidx.compose.material.BottomSheetState
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberStandardBottomSheetState
 import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
@@ -13,9 +21,9 @@ import com.example.mini_project.data.task.TaskDao
 import androidx.lifecycle.viewModelScope
 import androidx.room.DatabaseConfiguration
 import com.example.mini_project.data.AppContainer
+import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.category.Category
 import com.example.mini_project.data.task.Categories
-import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +32,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
+
+
 
 /*
 * Holds and exposes the state the UI consumes.
@@ -36,7 +46,7 @@ import kotlinx.coroutines.withContext
 /*
 Any changes to the UI state are immediately reflected in the UI
  */
-
+@OptIn(ExperimentalMaterialApi::class)
 class HomeViewModel(private val container: AppContainer): ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
 
@@ -45,7 +55,7 @@ class HomeViewModel(private val container: AppContainer): ViewModel() {
         _uiState.asStateFlow()
 
     suspend fun test() {
-        container.tasksRepository.insertTask(Task(1, "Work", 5, Frequency.Daily, category = Categories.Health, streak = 2))
+        //container.tasksRepository.insertTask(Task(1, "Work", 5, Frequency.Daily, 2))
     }
     //private val _uiState = MutableStateFlow(HomeUiState())
     //val homeUiState: StateFlow<HomeUiState> =
@@ -82,8 +92,10 @@ class HomeViewModel(private val container: AppContainer): ViewModel() {
     }
    */
 
-}
 
+
+
+}
 
 
 data class HomeUiState(

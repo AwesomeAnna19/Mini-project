@@ -16,8 +16,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +29,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.mini_project.R
+import com.example.mini_project.data.Screen
+import com.example.mini_project.ui.navigation.NavRouteHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mini_project.data.category.Category
 import com.example.mini_project.data.task.Task
@@ -37,10 +44,21 @@ import com.patrykandpatrick.vico.compose.chart.rememberCartesianChart
 import com.patrykandpatrick.vico.core.axis.AxisPosition
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.axis.formatter.DecimalFormatAxisValueFormatter
+import com.patrykandpatrick.vico.core.model.CartesianChartModel
 import com.patrykandpatrick.vico.core.model.CartesianChartModelProducer
+import com.patrykandpatrick.vico.core.model.ColumnCartesianLayerModel
+import com.patrykandpatrick.vico.core.model.columnSeries
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
+import java.math.RoundingMode
 import com.patrykandpatrick.vico.core.model.ExtraStore
 import java.lang.NullPointerException
 
+object StatsRoute : NavRouteHandler {
+    override val routeString = Screen.Stats.name
+    override val topBarTitleResource = R.string.stats_screen_title
+}
 @Composable
 fun FullScreen(
     viewModel: GraphViewModel = viewModel(factory = AppViewModelProvider.Factory)

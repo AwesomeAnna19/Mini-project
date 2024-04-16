@@ -1,6 +1,16 @@
 <resources>
-    <string name="app_name">Mini-project</string>
+    <string name="app_name">Habitize</string>
     <string name="add_task">Add Task</string>
+    <string name="cancel">Cancel</string>
+    <string name="category">Category</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="title">Title</string>
+    <string name="frequency">Frequency</string>
+    <string name="add_a_task">Add a task</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="stats_screen_title">Habit Statistics</string>
     <string name="quote_of_the_day">You are doing great, lad!</string>
     <string name="quote_of_the_day_title">Quote of the Day:</string>
 </resources>
