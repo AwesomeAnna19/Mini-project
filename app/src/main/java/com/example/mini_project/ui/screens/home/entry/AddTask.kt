@@ -64,7 +64,7 @@ fun AddTaskBottomSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    val task by juiceTrackerViewModel.currentJuiceStream.collectAsState() // erstat med rigtig viewModel
+    //val task by juiceTrackerViewModel.currentJuiceStream.collectAsState() // erstat med rigtig viewModel
   
    BottomSheetScaffold(
        modifier = modifier,
@@ -132,24 +132,24 @@ fun TaskInputForm(
         TextInputRow(
             inputLabel = stringResource(R.string.title),
             fieldValue = task.title,
-            onValueChange = //viewmodel Logik
+            onValueChange = { TODO() }//viewmodel Logik
         )
         DropdownInputRow(
             inputLabel = stringResource(R.string.category),
             fieldValue = task.category,
-            onValueChange = //viewmodel Logik
+            onValueChange = { TODO() }//viewmodel Logik
         )
 
         DropdownInputRow(
             inputLabel = stringResource(R.string.frequency),
             fieldValue = task.frequency ,
-            onValueChange = //viewmodel Logik
+            onValueChange = { TODO() }//viewmodel Logik
         )
 
         SliderInputRow(
             inputLabel = stringResource(R.string.difficulty),
             value = task.difficulty,
-            onValueChange = ,//view modelLogik
+            onValueChange = { TODO() },//view modelLogik
             minValue = 1,
             maxValue = 10
         )
@@ -159,7 +159,7 @@ fun TaskInputForm(
             onDismiss = onDismiss,
             dismissButtonLabel = dismissButtonLabel,
             onSubmit = onSubmit,
-            isSubmitButtonEnabled = , //viewmodel Logik
+            isSubmitButtonEnabled = false, //viewmodel Logik!!!
             submitButtonLabel = submitButtonLabel
         )
     }

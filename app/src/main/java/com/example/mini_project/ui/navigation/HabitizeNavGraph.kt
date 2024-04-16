@@ -50,8 +50,9 @@ fun HabitizeNavHost(
             )
         ) {
             TaskDetailsScreen(
+                navController = navController,
                 navigateBack = { navController.popBackStack()},
-                onNavigateUp = { navController.navigateUp()}
+                onNavigateUp = { navController.navigateUp()},
             )
         }
 

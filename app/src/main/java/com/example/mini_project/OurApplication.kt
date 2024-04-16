@@ -8,7 +8,9 @@ import com.example.mini_project.data.OurDatabase
 /**
 * Connects the application object to the application container.
 */
-class OurApplication: Application() {
+
+//Our = Habitize
+class OurApplication: Application() { //Her
 
         /**
          * AppContainer instance used by the rest of classes to obtain dependencies.
@@ -17,7 +19,7 @@ class OurApplication: Application() {
          */
     lateinit var container: AppContainer
 
-    val database: OurDatabase by lazy {OurDatabase.getDatabase(this)}
+    val database: OurDatabase by lazy {OurDatabase.getDatabase(this)} //her
 
         // Inside the onCreate() method (called when the application is starting),
         // an instance of AppDataContainer is created and assigned to the container property.
