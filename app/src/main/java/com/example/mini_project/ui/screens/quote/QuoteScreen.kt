@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.mini_project.R
 import com.example.mini_project.ui.theme.MiniprojectTheme
 
-class QuoteScreen : ComponentActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -93,7 +93,7 @@ fun QuoteButton() {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -102,7 +102,7 @@ fun QuoteButton() {
             modifier = Modifier
                 .height(100.dp)
                 .width(200.dp)
-                .align(Alignment.CenterHorizontally)
+                .padding(10.dp)
         ) {
             Text(
                 text = "Enter the app",
