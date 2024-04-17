@@ -6,14 +6,18 @@ import com.example.mini_project.data.badge.OfflineBadgesRepository
 import com.example.mini_project.data.category.CategoriesRepository
 import com.example.mini_project.data.category.OfflineCategoriesRepository
 import com.example.mini_project.data.quote.NetworkQuotesRepository
+import com.example.mini_project.data.quote.Quote
 import com.example.mini_project.data.quote.QuotesRepository
 import com.example.mini_project.data.task.OfflineTasksRepository
 import com.example.mini_project.data.task.TasksRepository
 import com.example.mini_project.network.ZenQuotesApiService
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * App container for Dependency injection.
@@ -66,13 +70,14 @@ class AppDataContainer(private val context: Context) : AppContainer {
 
     /** Base URL for the web service, Zenquotes site*/
     private val baseUrl =
-        "https://zenquotes.io/api"
+        "https://zenquotes.io/api/"
 
     /**
-     * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
+     * Use the Retrofit builder to build a retrofit object using a Gson converter
      */
     private val retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        //.addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(baseUrl)
         .build()
 

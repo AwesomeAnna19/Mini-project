@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
@@ -75,7 +76,7 @@ object HomeRoute : NavRouteHandler {
     override val topBarTitleResource = R.string.app_name
 }
 
-@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -294,7 +295,7 @@ fun TaskRow(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = Color.Blue,
+            containerColor = MaterialTheme.colorScheme.secondary,
         ),
     ) {
         Row(

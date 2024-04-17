@@ -1,17 +1,19 @@
 package com.example.mini_project.ui.screens.quote
 
 
-import android.os.Build
-import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -35,11 +37,11 @@ object QuoteRoute : NavRouteHandler {
     override val topBarTitleResource = (R.string.quote)
 }
 
-@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun QuoteScreen(
     viewModel: QuoteViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    onRetry: () -> Unit,
+    onRetry: () -> Unit = viewModel::getRandomQuote,
+    onSkip: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -47,24 +49,32 @@ fun QuoteScreen(
 
     //(Sealed keyword, making the conditionals exhaustive - no else branch needed like usual with when statements
     when (quoteUiState) {
-        is QuoteUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
-        is QuoteUiState.Sucess -> SuccessScreen(quoteUiState.quote, modifier)
-        is QuoteUiState.Error -> ErrorScreen(onRetry = onRetry, modifier = modifier.fillMaxSize())
+        is QuoteUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize(), onSkip = onSkip)
+        is QuoteUiState.Success -> SuccessScreen(quoteUiState.quote, onSkip = onSkip)
+        is QuoteUiState.Error -> ErrorScreen(modifier = modifier.fillMaxSize(), onRetry = onRetry, onSkip = onSkip,)
     }
 }
 
+/**
+ * The Quote screen displaying the quote, and button to move on.
+ */
 @Composable
 fun SuccessScreen(
-    quote: Quote,
+    quote: List<Quote>,
+    onSkip: () -> Unit,
     modifier: Modifier = Modifier
+) {
+    QuoteOfTheDay(
+        quote = quote.elementAt(0).quote,
+        author = quote.elementAt(0).author,
+        modifier = modifier
     ) {
 
-    Column {
-
-        QuoteOfTheDay(quote = quote.q, author = quote.a )
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /*TODO*/ }
+            onClick = onSkip,
+            modifier = modifier,
         ) {
             Text(
                 text = stringResource(R.string.app_name)
@@ -77,25 +87,21 @@ fun SuccessScreen(
  * The Quote screen displaying the loading picture.
  */
 @Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
+fun LoadingScreen(modifier: Modifier = Modifier, onSkip: () -> Unit) {
 
-   Column {
-       ImageMessageColumn(
-           modifier = modifier.size(20.dp),
-           imageRes = R.drawable.loading_img,
-           contentDescriptionRes = R.string.loading,
-           messageRes = R.string.loading
-       )
-
-       Button(
-           onClick = { /*TODO*/ }
-       ) {
+    ImageMessageColumn(
+        modifier = modifier.size(20.dp),
+        imageRes = R.drawable.loading_img,
+        contentDescriptionRes = R.string.loading,
+        messageRes = R.string.loading
+    ) {
+        Button(
+           onClick = onSkip
+        ) {
            Text(
                text = stringResource(R.string.skip)
            )
-
        }
-
    }
 }
 
@@ -103,40 +109,44 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
  * The Quote screen displaying error message and retry button.
  */
 @Composable
-fun ErrorScreen(onRetry: () -> Unit, modifier: Modifier = Modifier) {
+fun ErrorScreen(onRetry: () -> Unit, onSkip: () -> Unit, modifier: Modifier = Modifier) {
 
-    Column {
-        ImageMessageColumn(
-            imageRes = R.drawable.ic_connection_error,
-            contentDescriptionRes = R.string.connection_error,
-            messageRes = R.string.loading_failed)
-
+    ImageMessageColumn(
+        imageRes = R.drawable.ic_connection_error,
+        contentDescriptionRes = R.string.connection_error,
+        messageRes = R.string.loading_failed
+    ) {
         ButtonRow(
-            onDismiss = { /*TODO*/ },
+            onDismiss = onRetry,
             dismissButtonLabel = stringResource(R.string.retry),
-            onSubmit = { /*TODO*/ },
+            onSubmit = onSkip,
             isSubmitButtonEnabled = true,
             submitButtonLabel = stringResource(R.string.skip)
         )
-
     }
 }
 
 
 
 @Composable
-fun QuoteOfTheDay(quote: String, author: String) {
+fun QuoteOfTheDay(
+    quote: String?,
+    author: String?,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
 
     //The actual quote of the day
     Column (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = quote,
+            text = quote.toString(),
             fontSize = 40.sp,
+            lineHeight = 50.sp,
             fontStyle = FontStyle.Italic,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -144,12 +154,16 @@ fun QuoteOfTheDay(quote: String, author: String) {
         )
 
         Text(
-            text = author,
+            text = author.toString(),
             fontSize = 20.sp,
             modifier = Modifier
-                .padding(top = 48.dp, end = 48.dp)
+                .padding(48.dp)
                 .align(Alignment.End),
         )
+
+        Box(modifier = modifier) {
+            content()
+        }
     }
 }
 
@@ -158,7 +172,9 @@ fun ImageMessageColumn(
     imageRes: Int,
     contentDescriptionRes: Int,
     messageRes: Int,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
 
     Column(
         modifier = modifier,
@@ -175,22 +191,27 @@ fun ImageMessageColumn(
             text = stringResource(messageRes),
             modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
         )
+
+        Box(modifier = modifier){
+            content()
+        }
     }
 }
 
 
 @Preview
 @Composable
-fun PreviewSuccessScreen() {
+fun SuccessScreenPreview() {
     // Create a sample quote for preview
-    val sampleQuote = Quote(
-        q = "Sample quote text",
-        a = "Sample author",
-        h = "jgsdj"
+    val sampleQuote = listOf(
+        Quote(
+            quote = "Sample quote text",
+            author = "Sample author",
+            htmlQuote = "jgsdj"
+        )
     )
+
     // Preview the SuccessScreen with the sample quote
-    SuccessScreen(quote = sampleQuote)
+    SuccessScreen(quote = sampleQuote, onSkip = {})
 }
-
-
 

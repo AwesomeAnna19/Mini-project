@@ -26,7 +26,6 @@ import com.example.mini_project.ui.screens.quote.QuoteViewModel
  *
  */
 
-@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun HabitizeNavHost(
     navController: NavHostController,
@@ -36,12 +35,13 @@ fun HabitizeNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = HomeRoute.routeString,
+        startDestination = QuoteRoute.routeString,
         modifier = modifier
     ) {
 
         composable(route = QuoteRoute.routeString) {
-            QuoteScreen(onRetry = { /*TODO*/ })
+            QuoteScreen(
+                onSkip = {navController.navigate(HomeRoute.routeString)} )
         }
 
         //Til tasks hjemme skærm

@@ -1,25 +1,12 @@
 package com.example.mini_project.data.quote
 
-import kotlinx.serialization.Serializable
-
+import com.google.gson.annotations.SerializedName
 
 /**
- * This data class defines a quote which includes ...
+ * This data class defines a quote which includes a quote, author and html string
  */
-
-
-@Serializable
 data class Quote (
-
-    /**Quote text
-     */
-    val q: String,
-
-    /**Author name
-     */
-    val a: String,
-
-    /** Pre-formatted HTML quote
-     */
-    val h: String
+    @SerializedName("q") val quote: String,
+    @SerializedName("a") val author: String,
+    @SerializedName("h") val htmlQuote: String
 )
