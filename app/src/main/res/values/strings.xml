@@ -13,4 +13,9 @@
     <string name="stats_screen_title">Habit Statistics</string>
     <string name="quote_of_the_day">You are doing great, lad!</string>
     <string name="quote_of_the_day_title">Quote of the Day:</string>
+    <string name="loading">Loading...</string>
+    <string name="connection_error">Connection Error</string>
+    <string name="loading_failed">Loading Failed</string>
+    <string name="retry">Retry</string>
+    <string name="quote">Quote</string>
 </resources>
