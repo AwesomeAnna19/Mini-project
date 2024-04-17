@@ -18,4 +18,5 @@
     <string name="loading_failed">Loading Failed</string>
     <string name="retry">Retry</string>
     <string name="quote">Quote</string>
+    <string name="skip">Skip</string>
 </resources>
