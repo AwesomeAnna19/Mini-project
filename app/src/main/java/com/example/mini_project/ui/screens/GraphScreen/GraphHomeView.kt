@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mini_project.data.AppContainer
+import com.example.mini_project.data.category.CategoriesRepository
 import com.example.mini_project.data.category.Category
 import com.example.mini_project.data.task.Task
+import com.example.mini_project.data.task.TasksRepository
 import com.patrykandpatrick.vico.core.model.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.model.ExtraStore
 import com.patrykandpatrick.vico.core.model.columnSeries
@@ -20,13 +22,16 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-class GraphViewModel(private val container: AppContainer): ViewModel() {
+class GraphViewModel(
+    private val tasksRepository: TasksRepository,
+    private val categoriesRepository: CategoriesRepository
+    ): ViewModel() {
 
     val graphWindowUIState = MutableStateFlow(GraphWindowUIState())
 
     val graphUiState : StateFlow<GraphUiState> = combine(
-        container.tasksRepository.getTasks(),
-        container.categoriesRepository.listOfAllCategoriesSortedByCurrentLevel()
+        tasksRepository.getTasks(),
+        categoriesRepository.listOfAllCategoriesSortedByCurrentLevel()
     ) { tasks, categories -> GraphUiState(tasks, categories) }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
