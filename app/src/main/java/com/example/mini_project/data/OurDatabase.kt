@@ -20,7 +20,7 @@ import com.example.mini_project.data.task.TaskDao
 @Database (
     entities = [Task::class, Category::class, Badge:: class],   //List of all entities/tables we have
     version = 1,               //Whenever you change the schema of the database table, you have to increase the version number
-    exportSchema = true       //To keep schema version history backups or not
+    exportSchema = false      //To keep schema version history backups or not
 )
 abstract class OurDatabase : RoomDatabase() {
 
@@ -53,6 +53,7 @@ abstract class OurDatabase : RoomDatabase() {
                 // Database name is "app_database". CHANGE IT!
                 Room.databaseBuilder(context, OurDatabase::class.java, "app_database")
                     .createFromAsset("Database/app_database.db", (testPreCallback()))
+                    //.fallbackToDestructiveMigration()
                     .build()  //Creates the database instance
                     .also { Instance = it; Log.e("Database", "Initialized")}  //Keeps a reference to the recently created db instance.
             }

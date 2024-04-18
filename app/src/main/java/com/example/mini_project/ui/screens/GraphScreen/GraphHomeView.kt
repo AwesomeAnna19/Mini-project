@@ -25,7 +25,7 @@ class GraphViewModel(private val container: AppContainer): ViewModel() {
     val graphWindowUIState = MutableStateFlow(GraphWindowUIState())
 
     val graphUiState : StateFlow<GraphUiState> = combine(
-        container.tasksRepository.getTaskByFrequencyList(),
+        container.tasksRepository.getTasks(),
         container.categoriesRepository.listOfAllCategoriesSortedByCurrentLevel()
     ) { tasks, categories -> GraphUiState(tasks, categories) }.stateIn(
         scope = viewModelScope,

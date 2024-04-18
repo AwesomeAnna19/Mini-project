@@ -14,7 +14,8 @@ data class Task (
     val difficulty: Int,     //Range ?
     val frequency: Frequency,
     val streak: Int,         //Times done in a row
-    val category: Categories
+    val category: Categories,
+    val isDone: Boolean
 )
 
 enum class  Frequency {

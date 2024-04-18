@@ -1,6 +1,7 @@
 package com.example.mini_project.ui.screens.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,7 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,6 +55,7 @@ import com.example.mini_project.ui.screens.home.entry.AddTaskFAB
 import com.example.mini_project.ui.screens.navItemList
 import com.example.mini_project.ui.theme.MiniprojectTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -63,7 +68,7 @@ import kotlinx.coroutines.withContext
 
 
 val myCategory = Category(name = Categories.Health, color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
-val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Frequency.Monthly, streak = 0, category = Categories.Health)
+val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Frequency.Monthly, streak = 0, category = Categories.Health, isDone = false)
 
 val myTaskList = listOf(myTask, myTask, myTask)
 
@@ -83,6 +88,8 @@ fun HomeScreen(
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+
+    viewModel.InsertTask(myTask)
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
@@ -140,8 +147,8 @@ fun HomeScreen(
             }
         ) { contentPadding ->
             HomeBody(
-                categoryTitles = "dude",
-                categoryTaskList = myTaskList,
+                uiState = homeUiState,
+                viewModel = viewModel,
                 onTaskClick = navigateToTaskDetails,
                 modifier = Modifier
                     .padding(contentPadding)
@@ -156,19 +163,22 @@ fun HomeScreen(
 
 @Composable
 fun HomeBody(
-    categoryTitles: String,
-    categoryTaskList: List<Task>,
+    uiState: HomeUiState,
+    viewModel: HomeViewModel,
     onTaskClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val fullMaps = uiState.taskMap.filter { x -> x.value.isNotEmpty() }
+
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(1.dp)
     ) {
-        items(items = categoryTaskList) {
+        items(items = fullMaps.toList()) {
             CategoryTaskList(
-                categoryTitle = categoryTitles,
-                taskList = categoryTaskList,
+                content = it,
+                viewModel = viewModel,
                 onTaskClick = {onTaskClick(it.id)},
                 modifier = Modifier
             )
@@ -177,8 +187,8 @@ fun HomeBody(
 }
 @Composable
 fun CategoryTaskList(
-    categoryTitle: String,
-    taskList: List<Task>,
+    content: Pair<Frequency, List<Task>>,
+    viewModel: HomeViewModel,
     onTaskClick: (Task) -> Unit,
     modifier: Modifier = Modifier
 
@@ -194,7 +204,7 @@ fun CategoryTaskList(
         ) {
 
             Text(
-                text = categoryTitle,
+                text = content.first.toString(),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.
@@ -202,7 +212,8 @@ fun CategoryTaskList(
             )
 
             TaskList(
-                taskList = taskList,
+                content = content,
+                viewModel = viewModel,
                 onTaskClick = onTaskClick
             )
         }
@@ -213,20 +224,26 @@ fun CategoryTaskList(
 
 @Composable
 private fun TaskList(
-    taskList: List<Task>,
+    content: Pair<Frequency, List<Task>>,
+    viewModel: HomeViewModel,
     onTaskClick: (Task) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+
     Column(
         modifier = modifier,
     ) {
-        taskList.forEach { task ->
-            TaskRow(
-                task = myTask,
-                modifier = Modifier
-                    .padding(1.dp)
-                    .clickable { onTaskClick(task) }
-            )
+        content.second.forEach { task ->
+            if ( !task.isDone) {
+                TaskRow(
+                    viewModel = viewModel,
+                    task = task,
+                    modifier = Modifier
+                        .padding(1.dp)
+                        .clickable { onTaskClick(task) }
+                )
+            }
         }
     }
 }
@@ -234,14 +251,17 @@ private fun TaskList(
 
 @Composable
 fun TaskRow(
+    viewModel: HomeViewModel,
     task: Task,
     modifier: Modifier = Modifier
 ) {
 
+
+
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = Color.Blue,
+            containerColor = Color.Gray,
         ),
     ) {
         Row(
@@ -251,7 +271,7 @@ fun TaskRow(
             ,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(checked = false, onCheckedChange = {})
+            Checkbox(checked = false, onCheckedChange = {viewModel.finishTask(task)})
 
             Text(text = task.title)
 
@@ -304,7 +324,7 @@ fun TaskListPreview() {
 @Composable
     fun TaskRowPreview() {
         MiniprojectTheme {
-            TaskRow(task = myTask)
+            //TaskRow(task = myTask)
         }
     }
 

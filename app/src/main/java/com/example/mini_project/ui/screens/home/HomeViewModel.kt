@@ -30,7 +30,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
@@ -50,22 +52,44 @@ Any changes to the UI state are immediately reflected in the UI
 class HomeViewModel(private val container: AppContainer): ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
 
-
-    val homeUiState: StateFlow<HomeUiState> =
-        _uiState.asStateFlow()
-
     suspend fun test() {
         //container.tasksRepository.insertTask(Task(1, "Work", 5, Frequency.Daily, 2))
     }
-    //private val _uiState = MutableStateFlow(HomeUiState())
-    //val homeUiState: StateFlow<HomeUiState> =
        // _uiState.asStateFlow()
-    val cont = container
-    val taskey = container.tasksRepository.getTaskByFrequencyList().stateIn(
+    val taskey = container.tasksRepository.getTasks().stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(5000),
     initialValue = listOf()
     )
+
+    val homeUiState : StateFlow<HomeUiState> = combine(
+        container.tasksRepository.getTaskByFrequencyList(Frequency.Daily),
+        container.tasksRepository.getTaskByFrequencyList(Frequency.Weekly),
+        container.tasksRepository.getTaskByFrequencyList(Frequency.Monthly),
+        container.tasksRepository.getTaskByFrequencyList(Frequency.Yearly)
+    ) { day, week, month, year ->
+        HomeUiState(mapOf(
+            Frequency.Daily to day,
+            Frequency.Weekly to week,
+            Frequency.Monthly to month,
+            Frequency.Yearly to year)
+            )}.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = HomeUiState()
+            )
+
+    fun finishTask(task: Task) {
+        viewModelScope.launch {
+            container.tasksRepository.updateTask(task.copy(isDone = true, streak = task.streak + 1))
+        }
+    }
+
+    fun InsertTask(task: Task) {
+        viewModelScope.launch {
+            container.tasksRepository.insertTask(task)
+        }
+    }
 
     /*fun test(): StateFlow<List<Task>> {
         Log.e("DatabaseStuff", "Test started")
@@ -99,5 +123,5 @@ class HomeViewModel(private val container: AppContainer): ViewModel() {
 
 
 data class HomeUiState(
-    val taskList: List<Task> = listOf(),
+    val taskMap: Map<Frequency, List<Task>> = mapOf()
 )

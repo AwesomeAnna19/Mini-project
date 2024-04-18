@@ -27,12 +27,12 @@ interface TaskDao {
 
 
     /*Fra Miro: Select all based on id -> instans af klassen spyttes ud*/
-    @Query("SELECT * from tasks WHERE id = :id")
-    fun getTask(id: Int): Flow<Task>
+    @Query("SELECT * from tasks")
+    fun getTasks(): Flow<List<Task>>
 
     /*Fra Miro: Select og group by reminder schedule*/
-    @Query("SELECT * from tasks ORDER BY frequency ASC")
-    fun getTasksByFrequency(): Flow<List<Task>>
+    @Query("SELECT * from tasks Where frequency = :frequency order by title asc")
+    fun getTasksByFrequency(frequency: Frequency): Flow<List<Task>>
 
 
     /*Fra Miro: filter based on category*/

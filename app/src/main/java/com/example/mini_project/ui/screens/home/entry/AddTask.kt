@@ -72,7 +72,7 @@ fun AddTaskBottomSheet(
        scaffoldState = sheetScaffoldState,
        sheetContent = {
            BottomSheetContent(
-               task = Task(title = "Boobs", difficulty = 5, frequency = Frequency.Weekly, streak = 5, category = Categories.Health),
+               task = Task(title = "Boobs", difficulty = 5, frequency = Frequency.Weekly, streak = 5, category = Categories.Health, isDone = false),
                onCancel = onCancel, 
                onSubmit = onSubmit
            )
