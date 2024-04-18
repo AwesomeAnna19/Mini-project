@@ -4,4 +4,5 @@ enum class Screen {
     Tasks,
     Stats,
     TaskDetails,
+    Quote,
 }

@@ -5,8 +5,19 @@ import com.example.mini_project.data.badge.BadgesRepository
 import com.example.mini_project.data.badge.OfflineBadgesRepository
 import com.example.mini_project.data.category.CategoriesRepository
 import com.example.mini_project.data.category.OfflineCategoriesRepository
+import com.example.mini_project.data.quote.NetworkQuotesRepository
+import com.example.mini_project.data.quote.Quote
+import com.example.mini_project.data.quote.QuotesRepository
 import com.example.mini_project.data.task.OfflineTasksRepository
 import com.example.mini_project.data.task.TasksRepository
+import com.example.mini_project.network.ZenQuotesApiService
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * App container for Dependency injection.
@@ -20,6 +31,7 @@ interface AppContainer {
     val tasksRepository: TasksRepository
     val categoriesRepository: CategoriesRepository
     val badgesRepository: BadgesRepository
+    val quotesRepository: QuotesRepository
 
     val __dataBase: OurDatabase
 }
@@ -53,4 +65,36 @@ class AppDataContainer(private val context: Context) : AppContainer {
     override val __dataBase: OurDatabase by lazy {
         OurDatabase.getDatabase(context)
     }
+
+
+
+    /** Base URL for the web service, Zenquotes site*/
+    private val baseUrl =
+        "https://zenquotes.io/api/"
+
+    /**
+     * Use the Retrofit builder to build a retrofit object using a Gson converter
+     */
+    private val retrofit = Retrofit.Builder()
+        //.addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(baseUrl)
+        .build()
+
+    /**
+     * Retrofit service object for creating api calls
+     * Lazily initialized - initialized at first usage to avoid unnecessary computation or use of other computing resources
+     */
+   private val retrofitService: ZenQuotesApiService by lazy {
+        //Initialize the retrofitService variable using the retrofit.create() method with the ZenQuotesApiService interface.
+        retrofit.create(ZenQuotesApiService::class.java)
+    }
+
+    /**
+     * DI implementation for Quotes repository
+     */
+    override val quotesRepository: QuotesRepository by lazy {
+        NetworkQuotesRepository(retrofitService)
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.example.mini_project.ui.screens.home
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
@@ -78,6 +81,7 @@ object HomeRoute : NavRouteHandler {
     override val topBarTitleResource = R.string.app_name
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -107,7 +111,7 @@ fun HomeScreen(
             //bottomSheetScaffoldState.bottomSheetState.hide()
         }
     }
-
+/*
     AddTaskBottomSheet(
         sheetScaffoldState = bottomSheetScaffoldState,
         onCancel = {
@@ -158,10 +162,60 @@ fun HomeScreen(
     }
 }
 
+ */
+
+    Scaffold(
+        topBar = {
+            HabitizeTopBar(
+                title = stringResource(HomeRoute.topBarTitleResource),
+                canNavigateBack = false,
+            )
+        },
+        floatingActionButton = {
+            AddTaskFAB(
+                onClick = {
+                    // viewModel.resetCurrentTask
+                    coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.expand() }
+                }
+            )
+        },
+        bottomBar = {
+            HabitizeBottomBar(
+                navItemList = navItemList,
+                navController = navController,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
+    ){ contentPadding ->
+        AddTaskBottomSheet(
+            sheetScaffoldState = bottomSheetScaffoldState,
+            onCancel = {
+                coroutineScope.launch {
+                    bottomSheetScaffoldState.bottomSheetState.hide()
+                }
+            },
+            onSubmit = {
+                //viewModel.saveTask
+                coroutineScope.launch {
+                    bottomSheetScaffoldState.bottomSheetState.hide()
+                }
+            }
+        ) {
+            HomeBody(
+                categoryTitles = "dude",
+                categoryTaskList = myTaskList,
+                onTaskClick = navigateToTaskDetails,
+                modifier = Modifier
+                    .padding(contentPadding)
+                    .fillMaxSize()
+            )
+        }
+    }
+}
 
 
-
-@Composable
+    @Composable
 fun HomeBody(
     uiState: HomeUiState,
     viewModel: HomeViewModel,
@@ -261,7 +315,7 @@ fun TaskRow(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = Color.Gray,
+            containerColor = MaterialTheme.colorScheme.secondary,
         ),
     ) {
         Row(

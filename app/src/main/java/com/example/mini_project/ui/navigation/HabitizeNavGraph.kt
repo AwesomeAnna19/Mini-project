@@ -1,5 +1,7 @@
 package com.example.mini_project.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -14,6 +16,10 @@ import com.example.mini_project.ui.screens.home.HomeRoute
 import com.example.mini_project.ui.screens.home.HomeScreen
 import com.example.mini_project.ui.screens.home.details.TaskDetailsRoute
 import com.example.mini_project.ui.screens.home.details.TaskDetailsScreen
+import com.example.mini_project.ui.screens.quote.QuoteRoute
+import com.example.mini_project.ui.screens.quote.QuoteScreen
+import com.example.mini_project.ui.screens.quote.QuoteUiState
+import com.example.mini_project.ui.screens.quote.QuoteViewModel
 
 /**
  *
@@ -29,9 +35,14 @@ fun HabitizeNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = HomeRoute.routeString,
+        startDestination = QuoteRoute.routeString,
         modifier = modifier
     ) {
+
+        composable(route = QuoteRoute.routeString) {
+            QuoteScreen(
+                onSkip = {navController.navigate(HomeRoute.routeString)} )
+        }
 
         //Til tasks hjemme skærm
         composable(route = HomeRoute.routeString) {
