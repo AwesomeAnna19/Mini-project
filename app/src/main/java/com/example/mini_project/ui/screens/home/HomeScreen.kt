@@ -164,7 +164,7 @@ fun HomeScreen(
 
  */
 
-    Scaffold(
+    /*Scaffold(
         topBar = {
             HabitizeTopBar(
                 title = stringResource(HomeRoute.topBarTitleResource),
@@ -212,7 +212,7 @@ fun HomeScreen(
             )
         }
     }
-}
+}  */
 
 
     @Composable
