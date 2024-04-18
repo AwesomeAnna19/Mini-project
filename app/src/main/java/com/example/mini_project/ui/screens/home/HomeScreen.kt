@@ -342,45 +342,6 @@ fun TaskRow(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    //HomeScreen(onTabPressed = ((Screen)-> Unit))
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CategorizedTaskListPreview() {
-    MiniprojectTheme {
-        /*
-        CategoryTaskList(categoryTitle = "title", taskList = myTaskList)
-
-         */
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TaskListPreview() {
-    MiniprojectTheme {
-        /*
-        TaskList(
-            myTaskList
-        )
-
-         */
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-    fun TaskRowPreview() {
-        MiniprojectTheme {
-            //TaskRow(task = myTask)
-        }
-    }
 
 
 
