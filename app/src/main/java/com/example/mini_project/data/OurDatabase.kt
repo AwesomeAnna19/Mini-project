@@ -19,7 +19,7 @@ import com.example.mini_project.data.task.TaskDao
 //Database annotation for the abstract class directly below parameters
 @Database (
     entities = [Task::class, Category::class, Badge:: class],   //List of all entities/tables we have
-    version = 1,               //Whenever you change the schema of the database table, you have to increase the version number
+    version = 2,               //Whenever you change the schema of the database table, you have to increase the version number
     exportSchema = false      //To keep schema version history backups or not
 )
 abstract class OurDatabase : RoomDatabase() {

@@ -6,8 +6,14 @@ import com.example.mini_project.data.AppContainer
 
 class TaskDetailsViewModel(
     savedStateHandle: SavedStateHandle,
-    private val container: AppContainer
+    //private val container: AppContainer
 ) : ViewModel() {
+
+
+    /**
+     * Holds current item ui state
+     */
+
 
     private val taskId: Int = checkNotNull(savedStateHandle[TaskDetailsRoute.taskIdArgument])
 

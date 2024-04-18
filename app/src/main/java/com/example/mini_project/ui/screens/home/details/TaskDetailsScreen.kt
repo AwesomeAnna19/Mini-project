@@ -7,8 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.mini_project.R
 import com.example.mini_project.data.Screen
 import com.example.mini_project.ui.AppViewModelProvider
@@ -72,3 +74,5 @@ fun TaskDetailsScreen(
         )
     }
 }
+
+

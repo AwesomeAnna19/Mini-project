@@ -76,7 +76,6 @@ class AppDataContainer(private val context: Context) : AppContainer {
      * Use the Retrofit builder to build a retrofit object using a Gson converter
      */
     private val retrofit = Retrofit.Builder()
-        //.addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(baseUrl)
         .build()

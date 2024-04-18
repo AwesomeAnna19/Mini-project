@@ -86,15 +86,18 @@ object HomeRoute : NavRouteHandler {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
     navController: NavHostController,
-    navigateToTaskDetails: (Int) -> Unit
+    navigateToTaskDetails: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope() //Revisit
 
-    viewModel.InsertTask(myTask)
+    viewModel.InsertTask(myTask)  //Revisit
 
+
+//Revisit
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
             initialValue = SheetValue.Hidden,
@@ -102,69 +105,16 @@ fun HomeScreen(
         )
     )
 
-
-
-
+//Revisit
     LaunchedEffect (Unit) {
         withContext(Dispatchers.IO) {
             viewModel.test()
             //bottomSheetScaffoldState.bottomSheetState.hide()
         }
     }
-/*
-    AddTaskBottomSheet(
-        sheetScaffoldState = bottomSheetScaffoldState,
-        onCancel = {
-            coroutineScope.launch {
-                bottomSheetScaffoldState.bottomSheetState.hide()
-            }
-        },
-        onSubmit = {
-            //viewModel.saveTask
-            coroutineScope.launch {
-                bottomSheetScaffoldState.bottomSheetState.hide()
-            }
-        }
-    ) {
-        Scaffold(
-            topBar = {
-                HabitizeTopBar(
-                    title = stringResource(HomeRoute.topBarTitleResource),
-                    canNavigateBack = false,
-                    )
-            },
-            floatingActionButton = {
-                AddTaskFAB(
-                    onClick = {
-                        // viewModel.resetCurrentTask
-                        coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.expand() }
-                    }
-                )
-            },
-            bottomBar = {
-                HabitizeBottomBar(
-                    navItemList = navItemList,
-                    navController = navController,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-            }
-        ) { contentPadding ->
-            HomeBody(
-                uiState = homeUiState,
-                viewModel = viewModel,
-                onTaskClick = navigateToTaskDetails,
-                modifier = Modifier
-                    .padding(contentPadding)
-                    .fillMaxSize()
-            )
-        }
-    }
-}
 
- */
 
-    /*Scaffold(
+    Scaffold(
         topBar = {
             HabitizeTopBar(
                 title = stringResource(HomeRoute.topBarTitleResource),
@@ -203,8 +153,8 @@ fun HomeScreen(
             }
         ) {
             HomeBody(
-                categoryTitles = "dude",
-                categoryTaskList = myTaskList,
+                uiState = homeUiState,
+                viewModel = viewModel,
                 onTaskClick = navigateToTaskDetails,
                 modifier = Modifier
                     .padding(contentPadding)
@@ -212,7 +162,7 @@ fun HomeScreen(
             )
         }
     }
-}  */
+}
 
 
     @Composable
@@ -309,8 +259,6 @@ fun TaskRow(
     task: Task,
     modifier: Modifier = Modifier
 ) {
-
-
 
     Card(
         modifier = modifier,
