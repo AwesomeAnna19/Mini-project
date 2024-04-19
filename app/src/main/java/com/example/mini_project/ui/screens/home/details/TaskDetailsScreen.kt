@@ -58,6 +58,7 @@ fun TaskDetailsScreen(
 
         TaskInputForm(
             taskDetails = viewModel.taskUiState.taskDetails,
+            onValueChange = viewModel::updateUiState,
             onDismiss = {
                 coroutineScope.launch {
                     viewModel.deleteTask()
