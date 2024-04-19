@@ -22,7 +22,7 @@ class TaskEntryViewModel (private val tasksRepository: TasksRepository ) : ViewM
 
     fun updateUiState(taskDetails: TaskDetails) {
         taskUiState =
-            TaskUiState(taskDetails = taskDetails, isEntryValid = validateTaskInput(taskDetails)).also { Log.e(null, it.isEntryValid.toString()) }
+            TaskUiState(taskDetails = taskDetails, isEntryValid = validateTaskInput(taskDetails))
     }
     private fun validateTaskInput(uiState: TaskDetails = taskUiState.taskDetails) : Boolean {
         return with(uiState) {
@@ -48,8 +48,8 @@ data class TaskUiState(
 data class TaskDetails(
     val id: Int = 0,
     val title: String = "",
-    val category: String = "",
-    val frequency: String = "",
+    val category: String = "Work",
+    val frequency: String = "Daily",
     val difficulty: Int = 0,
     val isDone: Boolean = false,
     val streak: Int = 0

@@ -2,9 +2,7 @@ package com.example.mini_project.ui.screens
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.outlined.BarChart
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -35,8 +33,8 @@ val navItemList = listOf(
     NavItem(
         routeString = HomeRoute.routeString,
         title = "Tasks",
-        selectedIcon = Icons.Filled.List,
-        unselectedIcon = Icons.Outlined.List,
+        selectedIcon = Icons.AutoMirrored.Filled.List,
+        unselectedIcon = Icons.AutoMirrored.Outlined.List,
         hasNews = false
     ),
     NavItem(

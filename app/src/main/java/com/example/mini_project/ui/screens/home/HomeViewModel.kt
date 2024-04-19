@@ -1,7 +1,10 @@
 package com.example.mini_project.ui.screens.home
 
 import android.util.Log
+import androidx.compose.material.BottomSheetState
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mini_project.data.SavedDateDataStore
@@ -17,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.Dispatcher
@@ -36,6 +40,8 @@ Any changes to the UI state are immediately reflected in the UI
  */
 @OptIn(ExperimentalMaterialApi::class)
 class HomeViewModel(private val tasksRepository: TasksRepository, private val categoryRepository: CategoriesRepository, private val savedDateDataStore: SavedDateDataStore): ViewModel() {
+
+    val windowUiState = MutableStateFlow(HomeWindowUiState())
 
     val homeUiState : StateFlow<HomeUiState> = combine(
         tasksRepository.getTaskByFrequencyList(Frequency.Daily),
@@ -65,6 +71,7 @@ class HomeViewModel(private val tasksRepository: TasksRepository, private val ca
                 time.get(Calendar.MONTH),
                 time.get(Calendar.YEAR)
             )
+
             val savedDates = savedDateDataStore.SavedDate.first()
             val frequenciesToRenew = arrayOf(false, false, false, false)
             savedDates.forEachIndexed { i, d ->
@@ -81,7 +88,8 @@ class HomeViewModel(private val tasksRepository: TasksRepository, private val ca
             frequenciesToRenew.forEachIndexed { i, r ->
                 if (r) {
                     homeUiState.value.taskMap[Frequency.entries[i]]?.forEach {
-                        setFinishTask(it, false)
+                        if (it.isDone) setFinishTask(it, false)
+                        else resetTaskStreak(it)
                     }
                 }
             }
@@ -113,6 +121,14 @@ class HomeViewModel(private val tasksRepository: TasksRepository, private val ca
         }
     }
 
+    fun resetTaskStreak(task: Task) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                tasksRepository.updateTask(task.copy(streak = 0))
+            }
+        }
+    }
+
     fun InsertTask(task: Task) {
         viewModelScope.launch {
             tasksRepository.insertTask(task)
@@ -124,9 +140,19 @@ class HomeViewModel(private val tasksRepository: TasksRepository, private val ca
             categoryRepository.insertCategory(category)
         }
     }
+
+    fun toggleFABToState(state: Boolean) {
+        windowUiState.update { i -> i.copy(showFAB = state) }
+    }
 }
 
 
 data class HomeUiState(
     val taskMap: Map<Frequency, List<Task>> = mapOf()
+)
+
+data class HomeWindowUiState(
+    val showFAB: Boolean = true,
+    val sheetHidden: Boolean = true
+
 )

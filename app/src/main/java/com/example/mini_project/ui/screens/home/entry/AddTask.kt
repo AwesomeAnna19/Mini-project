@@ -1,5 +1,6 @@
 package com.example.mini_project.ui.screens.home.entry
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,6 +72,8 @@ fun AddTaskBottomSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
+
+
    BottomSheetScaffold(
        modifier = modifier,
        scaffoldState = sheetScaffoldState,
@@ -137,7 +140,7 @@ fun TaskSheetHeader(modifier: Modifier = Modifier, headerTitle: String) {
 @Composable
 fun TaskInputForm(
     taskDetails: TaskDetails,
-    onValueChange: (TaskDetails) -> Unit ={},
+    onValueChange: (TaskDetails) -> Unit = {},
     onDismiss: () -> Unit,
     dismissButtonLabel: String,
     isSubmitButtonEnabled: Boolean,
@@ -153,11 +156,16 @@ fun TaskInputForm(
         )
 
         DropdownInputRow<Categories>(
-            inputLabel = stringResource(R.string.category)
+            inputLabel = stringResource(R.string.category),
+            fieldValue = taskDetails.category,
+            onClick = {onValueChange(taskDetails.copy(category = it))}
         )
 
         DropdownInputRow<Frequency>(
-            inputLabel = stringResource(R.string.frequency)
+            inputLabel = stringResource(R.string.frequency),
+            fieldValue = taskDetails.frequency,
+            onClick = {onValueChange(taskDetails.copy(frequency = it))}
+
         )
 
 
@@ -211,14 +219,12 @@ fun TextInputRow(
 @Composable
 inline fun <reified T : Enum<T>> DropdownInputRow(
     inputLabel: String,
+    fieldValue: String,
+    crossinline onClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val optionsArray = enumValues<T>().map { option ->
         option.name
-    }
-
-    var selectedText by remember {
-        mutableStateOf(optionsArray[0])
     }
 
     var isExpanded by remember {
@@ -233,7 +239,7 @@ inline fun <reified T : Enum<T>> DropdownInputRow(
         ) {
             TextField(
                 modifier = Modifier.menuAnchor(),
-                value = selectedText,
+                value = fieldValue,
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) }
@@ -247,7 +253,7 @@ inline fun <reified T : Enum<T>> DropdownInputRow(
                     DropdownMenuItem(
                         text = { Text(text = text) },
                         onClick = {
-                            selectedText = optionsArray[index]
+                            onClick(text)
                             isExpanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding

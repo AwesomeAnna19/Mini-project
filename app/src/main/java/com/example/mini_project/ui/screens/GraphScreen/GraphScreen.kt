@@ -1,6 +1,6 @@
 package com.example.mini_project.ui.screens.GraphScreen
 
-import android.util.Log
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -47,7 +47,6 @@ import com.example.mini_project.ui.screens.HabitizeTopBar
 import com.example.mini_project.ui.screens.home.HomeBody
 import com.example.mini_project.ui.screens.home.HomeRoute
 import com.example.mini_project.ui.screens.home.entry.AddTaskFAB
-import com.example.mini_project.ui.screens.home.myTaskList
 import com.example.mini_project.ui.screens.navItemList
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
@@ -57,6 +56,7 @@ import com.patrykandpatrick.vico.compose.chart.rememberCartesianChart
 import com.patrykandpatrick.vico.core.axis.AxisPosition
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.axis.formatter.DecimalFormatAxisValueFormatter
+import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.model.CartesianChartModel
 import com.patrykandpatrick.vico.core.model.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.model.ColumnCartesianLayerModel
@@ -115,7 +115,7 @@ fun GraphBody(
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxHeight(0.8f)
+            .fillMaxHeight(1f)
             .background(color = Color.LightGray)
             .padding(paddingValues)
             .consumeWindowInsets(paddingValues)
@@ -242,7 +242,6 @@ fun TimeLineGraph(
     modelProducer: CartesianChartModelProducer,
     formatter: AxisValueFormatter<AxisPosition.Horizontal.Bottom> = DecimalFormatAxisValueFormatter<AxisPosition.Horizontal.Bottom>()
 ) {
-    Log.d(null, "TimeLineGraphComposed")
 
     CartesianChartHost(chart = rememberCartesianChart(
         rememberColumnCartesianLayer(),
@@ -299,7 +298,7 @@ fun TopThreeCard(category : Category, modifier: Modifier) {
 
     Card (shape = RectangleShape,modifier = modifier.fillMaxSize(1f)) {
         Row (horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = modifier){
-            Text(text = "${category.name.toString()}", modifier = Modifier.padding(4.dp))
+            Text(text = "${category.name}", modifier = Modifier.padding(4.dp))
             Text(text = "Level: ${category.currentLevel}", modifier = Modifier.padding(4.dp))
         }
     }

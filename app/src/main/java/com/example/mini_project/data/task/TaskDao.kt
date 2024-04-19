@@ -30,7 +30,7 @@ interface TaskDao {
     fun getTask(id: Int): Flow<Task>
 
     /*Fra Miro: Select all based on id -> instans af klassen spyttes ud*/
-    @Query("SELECT * from tasks")
+    @Query("SELECT * from tasks order by streak desc")
     fun getTasks(): Flow<List<Task>>
 
     /*Fra Miro: Select og group by reminder schedule*/

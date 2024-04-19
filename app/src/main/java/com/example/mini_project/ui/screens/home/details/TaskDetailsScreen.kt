@@ -1,9 +1,12 @@
 package com.example.mini_project.ui.screens.home.details
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,6 +23,7 @@ import com.example.mini_project.ui.screens.HabitizeTopBar
 import com.example.mini_project.ui.screens.home.HomeRoute
 import com.example.mini_project.ui.screens.home.entry.TaskInputForm
 import com.example.mini_project.ui.screens.navItemList
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 object TaskDetailsRoute : NavRouteHandler {
@@ -37,6 +41,7 @@ fun TaskDetailsScreen(
     viewModel: TaskDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val taskUiState by viewModel.taskUiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -59,8 +64,8 @@ fun TaskDetailsScreen(
     ) { innerPadding ->
 
         TaskInputForm(
-            taskDetails = viewModel.taskUiState.taskDetails,
-            onValueChange = viewModel::updateUiState,
+            taskDetails = taskUiState.taskDetails,
+            onValueChange = {task -> viewModel.updateUiState(task)  },
             onDismiss = {
                 coroutineScope.launch {
                     viewModel.deleteTask()
@@ -68,7 +73,7 @@ fun TaskDetailsScreen(
                 }
             },
             dismissButtonLabel = stringResource(R.string.delete),
-            isSubmitButtonEnabled = viewModel.taskUiState.isEntryValid,
+            isSubmitButtonEnabled = taskUiState.isEntryValid,
             onSubmit = {
                 coroutineScope.launch {
                     viewModel.updateTask()

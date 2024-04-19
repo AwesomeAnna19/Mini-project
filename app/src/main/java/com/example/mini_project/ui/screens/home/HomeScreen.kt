@@ -12,12 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.BottomSheetState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -62,20 +65,13 @@ import kotlinx.coroutines.withContext
 
 //inventory row
 
-
-val myCategory = Category(name = Categories.Health, currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
-val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Frequency.Monthly, streak = 0, category = Categories.Health, isDone = false)
-
-val myTaskList = listOf(myTask, myTask, myTask)
-
-
 object HomeRoute : NavRouteHandler {
     override val routeString = Screen.Tasks.name
     override val topBarTitleResource = R.string.app_name
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     navController: NavHostController,
@@ -86,18 +82,18 @@ fun HomeScreen(
 
 ) {
     val homeUiState by homeViewModel.homeUiState.collectAsState()
+    val windowUiState by homeViewModel.windowUiState.collectAsState()
     val coroutineScope = rememberCoroutineScope() //Revisit
 
     homeViewModel.CheckTime()
 
-//Revisit
+
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
             initialValue = SheetValue.Hidden,
             skipHiddenState = false,
         )
     )
-
 
     Scaffold(
         topBar = {
@@ -107,12 +103,12 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
-            AddTaskFAB(
-                onClick = {
-                    // viewModel.resetCurrentTask
-                    coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.expand() }
-                }
-            )
+                 AddTaskFAB(
+                    onClick = {
+                      coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.expand() }
+
+                    }
+                 )
         },
         bottomBar = {
             HabitizeBottomBar(
@@ -131,6 +127,7 @@ fun HomeScreen(
                 coroutineScope.launch {
                     bottomSheetScaffoldState.bottomSheetState.hide()
                 }
+                homeViewModel.toggleFABToState(true)
             },
             onSubmit = {
                 coroutineScope.launch {
@@ -139,6 +136,7 @@ fun HomeScreen(
                 }
             }
         ) {
+
             HomeBody(
                 uiState = homeUiState,
                 viewModel = homeViewModel,
@@ -227,7 +225,6 @@ private fun TaskList(
     ) {
         content.second.forEach { task ->
             if ( !task.isDone) {
-                Log.e(null, task.id.toString())
                 TaskRow(
                     viewModel = viewModel,
                     task = task,
@@ -247,7 +244,6 @@ fun TaskRow(
     task: Task,
     modifier: Modifier = Modifier
 ) {
-    Log.e(null, "TaskRow ${task.id.toString()}")
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
