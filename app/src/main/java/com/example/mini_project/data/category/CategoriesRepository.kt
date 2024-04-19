@@ -9,6 +9,8 @@ interface CategoriesRepository {
 
     fun listOfAllCategoriesSortedByCurrentLevel(take : Int): Flow<List<Category>>
 
+    fun getCategoryFromName(name : Categories) : Flow<Category>
+
     suspend fun updateCategory(name: Category)
 
     suspend fun insertCategory(category: Category)

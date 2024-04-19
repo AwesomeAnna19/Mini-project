@@ -24,7 +24,9 @@ object AppViewModelProvider {
 
         // Initializer for HomeViewModel
         initializer {
-            HomeViewModel(ourApplication().container.tasksRepository)
+            HomeViewModel(ourApplication().container.tasksRepository,
+                ourApplication().container.categoriesRepository,
+                ourApplication().container.savedDateDataStore)
         }
 
         // HUSK AT SLETTE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

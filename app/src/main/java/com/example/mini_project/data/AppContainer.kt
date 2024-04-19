@@ -1,6 +1,10 @@
 package com.example.mini_project.data
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.mini_project.data.badge.BadgesRepository
 import com.example.mini_project.data.badge.OfflineBadgesRepository
 import com.example.mini_project.data.category.CategoriesRepository
@@ -26,12 +30,18 @@ import retrofit2.converter.gson.GsonConverterFactory
  * TasksRepository, categoriesRepository, and badgesRepository.
  * These must be included in the implementation.
  */
+
+val Context.dateDataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "date"
+)
 interface AppContainer {
     //Abstract properties
     val tasksRepository: TasksRepository
     val categoriesRepository: CategoriesRepository
     val badgesRepository: BadgesRepository
     val quotesRepository: QuotesRepository
+
+    val savedDateDataStore: SavedDateDataStore
 
     val __dataBase: OurDatabase
 }
@@ -65,6 +75,8 @@ class AppDataContainer(private val context: Context) : AppContainer {
     override val __dataBase: OurDatabase by lazy {
         OurDatabase.getDatabase(context)
     }
+
+    override val savedDateDataStore: SavedDateDataStore = SavedDateDataStore(context.dateDataStore)
 
 
 

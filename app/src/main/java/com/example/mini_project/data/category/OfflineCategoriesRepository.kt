@@ -8,6 +8,9 @@ class OfflineCategoriesRepository(private val categoryDao: CategoryDao) : Catego
     override fun listOfAllCategoriesSortedByCurrentLevel(): Flow<List<Category>> = categoryDao.listOfAllCategoriesSortedByCurrentLevel()
 
     override fun listOfAllCategoriesSortedByCurrentLevel(take : Int): Flow<List<Category>> = categoryDao.listOfAllCategoriesSortedByCurrentLevel(take)
+
+    override fun getCategoryFromName(name: Categories): Flow<Category> = categoryDao.getCategoryFromName(name)
+
     override suspend fun updateCategory(category: Category) = categoryDao.update(category)
 
     override suspend fun insertCategory(category: Category) = categoryDao.insert(category)

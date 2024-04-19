@@ -84,8 +84,7 @@ fun HomeScreen(
     val homeUiState by viewModel.homeUiState.collectAsState()
     val coroutineScope = rememberCoroutineScope() //Revisit
 
-    viewModel.InsertTask(myTask)  //Revisit
-
+    viewModel.CheckTime()
 
 //Revisit
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -94,14 +93,6 @@ fun HomeScreen(
             skipHiddenState = false,
         )
     )
-
-//Revisit
-    LaunchedEffect (Unit) {
-        withContext(Dispatchers.IO) {
-            viewModel.test()
-            //bottomSheetScaffoldState.bottomSheetState.hide()
-        }
-    }
 
 
     Scaffold(
@@ -263,7 +254,7 @@ fun TaskRow(
             ,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(checked = false, onCheckedChange = {viewModel.finishTask(task)})
+            Checkbox(checked = false, onCheckedChange = {viewModel.setFinishTask(task)})
 
             Text(text = task.title)
 

@@ -1,41 +1,25 @@
 package com.example.mini_project.ui.screens.home
 
-import androidx.compose.material.BottomSheetScaffoldState
-import androidx.compose.material.BottomSheetState
-import androidx.compose.material.BottomSheetValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberStandardBottomSheetState
 import android.util.Log
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.mini_project.OurApplication
-import com.example.mini_project.data.task.TaskDao
 import androidx.lifecycle.viewModelScope
-import androidx.room.DatabaseConfiguration
-import com.example.mini_project.data.AppContainer
+import com.example.mini_project.data.SavedDateDataStore
+import com.example.mini_project.data.category.CategoriesRepository
 import com.example.mini_project.data.task.Frequency
-import com.example.mini_project.data.category.Category
-import com.example.mini_project.data.task.Categories
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.data.task.TasksRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
+import okhttp3.Dispatcher
+import java.util.Calendar
 
 
 /*
@@ -50,18 +34,7 @@ import kotlinx.coroutines.withContext
 Any changes to the UI state are immediately reflected in the UI
  */
 @OptIn(ExperimentalMaterialApi::class)
-class HomeViewModel(private val tasksRepository: TasksRepository): ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState())
-
-    suspend fun test() {
-        //container.tasksRepository.insertTask(Task(1, "Work", 5, Frequency.Daily, 2))
-    }
-       // _uiState.asStateFlow()
-    val taskey = tasksRepository.getTasks().stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(5000),
-    initialValue = listOf()
-    )
+class HomeViewModel(private val tasksRepository: TasksRepository, private val categoryRepository: CategoriesRepository, private val savedDateDataStore: SavedDateDataStore): ViewModel() {
 
     val homeUiState : StateFlow<HomeUiState> = combine(
         tasksRepository.getTaskByFrequencyList(Frequency.Daily),
@@ -74,15 +47,70 @@ class HomeViewModel(private val tasksRepository: TasksRepository): ViewModel() {
             Frequency.Weekly to week,
             Frequency.Monthly to month,
             Frequency.Yearly to year)
-            )}.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = HomeUiState()
-            )
+        )}.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = HomeUiState()
+    )
+    fun CheckTime() {
 
-    fun finishTask(task: Task) {
+    viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            val time = Calendar.getInstance()
+
+            val newDate = arrayOf(
+                time.get(Calendar.DAY_OF_MONTH),
+                time.get(Calendar.WEEK_OF_YEAR),
+                time.get(Calendar.MONTH),
+                time.get(Calendar.YEAR)
+            )
+            val savedDates = savedDateDataStore.SavedDate.first()
+            val frequenciesToRenew = arrayOf(false, false, false, false)
+            savedDates.forEachIndexed { i, d ->
+                if (d != newDate[i]) {
+                    frequenciesToRenew[i] = true
+                }
+
+                if (frequenciesToRenew.contains(true)) {
+                    savedDateDataStore.SaveDate(newDate[0], newDate[1], newDate[2], newDate[3])
+                }
+
+            }
+
+            frequenciesToRenew.forEachIndexed { i, r ->
+                if (r) {
+                    homeUiState.value.taskMap[Frequency.entries[i]]?.forEach {
+                        setFinishTask(it, false)
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    }
+
+
+    fun setFinishTask(task: Task, status: Boolean = true) {
         viewModelScope.launch {
-            tasksRepository.updateTask(task.copy(isDone = true, streak = task.streak + 1))
+            withContext(Dispatchers.IO) {
+                Log.d(null, task.category.toString())
+                tasksRepository.updateTask(task.copy(isDone = status, streak = task.streak + 1))
+                val relevantCat = categoryRepository.getCategoryFromName(task.category).first()
+                if (relevantCat == null) {Log.e(null, "Null relevant category: ${task.category}"); return@withContext}
+                var newXp = relevantCat.currentXp + task.difficulty
+                if (newXp >= relevantCat.xpRequiredForLevelUp) {
+                    Log.d(null, "Levelled up")
+                    newXp -= relevantCat.xpRequiredForLevelUp
+                    categoryRepository.updateCategory(
+                        relevantCat.copy(
+                            currentXp = newXp,
+                            currentLevel = relevantCat.currentLevel + 1
+                        )
+                    )
+                } else categoryRepository.updateCategory(relevantCat.copy(currentXp = newXp))
+            }
         }
     }
 

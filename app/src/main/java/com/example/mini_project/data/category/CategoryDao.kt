@@ -20,6 +20,10 @@ interface CategoryDao {
     @Query("SELECT * from categories ORDER BY currentLevel DESC, currentXp/xpRequiredForLevelUp LIMIT :take")
     fun listOfAllCategoriesSortedByCurrentLevel(take : Int): Flow<List<Category>>
 
+    @Query("SELECT * FROM categories WHERE name = :name")
+    fun getCategoryFromName(name : Categories) : Flow<Category>
+
+
     /*Fra Miro: Update the specific task with a specific category*/
     @Update
     suspend fun update(category: Category)
