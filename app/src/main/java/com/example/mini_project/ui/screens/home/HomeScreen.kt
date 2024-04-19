@@ -2,6 +2,7 @@ package com.example.mini_project.ui.screens.home
 
 import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -254,20 +256,20 @@ fun TaskRow(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_small))
-            ,
-            verticalAlignment = Alignment.CenterVertically
+            , horizontalArrangement = Arrangement.Absolute.SpaceAround
+            ,verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(checked = false, onCheckedChange = {viewModel.setFinishTask(task)})
 
-            Text(text = task.title)
+            Text(text = task.title, overflow = TextOverflow.Clip, softWrap = true, modifier = Modifier.weight(2f))
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(0.5f))
 
-            Text(text = "XP: ${task.difficulty}")
+            Text(text = "XP: ${task.difficulty}", overflow = TextOverflow.Clip, softWrap = true, modifier = Modifier.weight(1f))
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(0.5f))
 
-            Text(text = task.category.name)
+            Text(text = task.category.name, overflow = TextOverflow.Clip, softWrap = true, modifier = Modifier.weight(1f))
         }
     }
 

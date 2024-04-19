@@ -1,6 +1,8 @@
 package com.example.mini_project.ui.screens
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material3.Badge

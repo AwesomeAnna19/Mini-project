@@ -53,6 +53,8 @@ import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatrick.vico.compose.chart.CartesianChartHost
 import com.patrykandpatrick.vico.compose.chart.layer.rememberColumnCartesianLayer
 import com.patrykandpatrick.vico.compose.chart.rememberCartesianChart
+import com.patrykandpatrick.vico.compose.component.rememberLineComponent
+import com.patrykandpatrick.vico.compose.theme.VicoTheme
 import com.patrykandpatrick.vico.core.axis.AxisPosition
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.axis.formatter.DecimalFormatAxisValueFormatter
@@ -68,6 +70,7 @@ import java.math.RoundingMode
 import com.patrykandpatrick.vico.core.model.ExtraStore
 import kotlinx.coroutines.launch
 import java.lang.NullPointerException
+import kotlin.random.Random
 
 object StatsRoute : NavRouteHandler {
     override val routeString = Screen.Stats.name
@@ -242,9 +245,12 @@ fun TimeLineGraph(
     modelProducer: CartesianChartModelProducer,
     formatter: AxisValueFormatter<AxisPosition.Horizontal.Bottom> = DecimalFormatAxisValueFormatter<AxisPosition.Horizontal.Bottom>()
 ) {
+    val rnd = Random.Default
+    val list = listOf(LineComponent(Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)).hashCode()))
+
 
     CartesianChartHost(chart = rememberCartesianChart(
-        rememberColumnCartesianLayer(),
+        rememberColumnCartesianLayer(list),
         startAxis = rememberStartAxis(),
         bottomAxis = rememberBottomAxis(valueFormatter = formatter)
         ),
