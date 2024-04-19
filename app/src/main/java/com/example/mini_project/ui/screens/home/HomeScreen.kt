@@ -44,6 +44,7 @@ import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.ui.AppViewModelProvider
 import com.example.mini_project.ui.navigation.NavRouteHandler
+import com.example.mini_project.ui.screens.GraphScreen.StatsRoute
 import com.example.mini_project.ui.screens.HabitizeBottomBar
 import com.example.mini_project.ui.screens.HabitizeTopBar
 import com.example.mini_project.ui.screens.home.entry.AddTaskBottomSheet
@@ -61,7 +62,7 @@ import kotlinx.coroutines.withContext
 //inventory row
 
 
-val myCategory = Category(name = Categories.Health, color = "red", currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
+val myCategory = Category(name = Categories.Health, currentLevel = 1, currentXp = 0, xpRequiredForLevelUp = 100)
 val myTask: Task = Task(title = "This is a task", difficulty = 1, frequency = Frequency.Monthly, streak = 0, category = Categories.Health, isDone = false)
 
 val myTaskList = listOf(myTask, myTask, myTask)
@@ -114,6 +115,7 @@ fun HomeScreen(
             HabitizeBottomBar(
                 navItemList = navItemList,
                 navController = navController,
+                defaultTab = HomeRoute.routeString,
                 modifier = Modifier
                     .fillMaxWidth()
             )

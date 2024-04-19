@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mini_project.data.SavedDateDataStore
 import com.example.mini_project.data.category.CategoriesRepository
+import com.example.mini_project.data.category.Category
 import com.example.mini_project.data.task.Frequency
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.data.task.TasksRepository
@@ -118,8 +119,11 @@ class HomeViewModel(private val tasksRepository: TasksRepository, private val ca
         }
     }
 
-
-
+    fun InsertCategory(category : Category) {
+        viewModelScope.launch {
+            categoryRepository.insertCategory(category)
+        }
+    }
 }
 
 

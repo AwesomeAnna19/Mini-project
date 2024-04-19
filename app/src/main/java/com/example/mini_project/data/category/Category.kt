@@ -10,7 +10,6 @@ import com.example.mini_project.data.task.Categories
 data class Category (
     @PrimaryKey() //@PrimaryKey makes name the primary key to uniquely identify every entry in Item table
     val name: Categories,
-    val color: String,
     val currentLevel: Int,
     val currentXp: Int,
     val xpRequiredForLevelUp: Int

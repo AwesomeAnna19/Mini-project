@@ -17,6 +17,7 @@ import com.example.mini_project.ui.AppViewModelProvider
 import com.example.mini_project.ui.navigation.NavRouteHandler
 import com.example.mini_project.ui.screens.HabitizeBottomBar
 import com.example.mini_project.ui.screens.HabitizeTopBar
+import com.example.mini_project.ui.screens.home.HomeRoute
 import com.example.mini_project.ui.screens.home.entry.TaskInputForm
 import com.example.mini_project.ui.screens.navItemList
 import kotlinx.coroutines.launch
@@ -49,6 +50,7 @@ fun TaskDetailsScreen(
             HabitizeBottomBar(
                 navItemList = navItemList,
                 navController = navController,
+                defaultTab = HomeRoute.routeString,
                 modifier = Modifier
                     .fillMaxWidth()
             )

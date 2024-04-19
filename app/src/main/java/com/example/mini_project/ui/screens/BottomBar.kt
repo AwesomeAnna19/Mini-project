@@ -61,12 +61,13 @@ val navItemList = listOf(
 fun HabitizeBottomBar(
     navItemList: List<NavItem>,
     navController: NavHostController, //Aner ikke om det her er okay ,
+    defaultTab: String,
     modifier: Modifier = Modifier
 ) {
 
     //Den her skal over i en viewModel
     var currentTab by rememberSaveable {
-        mutableStateOf(HomeRoute.routeString)
+        mutableStateOf(defaultTab)
     }
 
 

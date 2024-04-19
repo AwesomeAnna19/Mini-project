@@ -34,6 +34,9 @@ enum class Categories{
     Hobbies,
     Health,
     Social,
+    Sport,
+    Work,
+    Chores
 
 }
 

@@ -93,6 +93,7 @@ fun FullScreen(
             HabitizeBottomBar(
                 navItemList = navItemList,
                 navController = navController,
+                defaultTab = StatsRoute.routeString,
                 modifier = Modifier
                     .fillMaxWidth()
             )
