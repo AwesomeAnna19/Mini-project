@@ -26,6 +26,9 @@ interface TaskDao {
 
 
 
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    fun getTask(id: Int): Flow<Task>
+
     /*Fra Miro: Select all based on id -> instans af klassen spyttes ud*/
     @Query("SELECT * from tasks")
     fun getTasks(): Flow<List<Task>>

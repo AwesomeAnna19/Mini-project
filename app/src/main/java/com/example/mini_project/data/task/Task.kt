@@ -1,7 +1,9 @@
 package com.example.mini_project.data.task
 
+import androidx.annotation.StringRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.mini_project.R
 import com.example.mini_project.data.category.Category
 
 //@Entity annotation marks a class as a database Entity class.
@@ -27,11 +29,11 @@ enum class  Frequency {
 
 }
 
-enum class Categories {
+enum class Categories{
 
     Hobbies,
     Health,
-    Social
+    Social,
 
 }
 

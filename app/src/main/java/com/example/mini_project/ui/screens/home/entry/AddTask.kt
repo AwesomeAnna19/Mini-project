@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -11,9 +13,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +25,11 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -48,7 +55,6 @@ fun AddTaskFAB(
             imageVector = Icons.Default.Add,
             contentDescription = stringResource(R.string.add_task)
         )
-
     }
 }
 
@@ -56,7 +62,7 @@ fun AddTaskFAB(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskBottomSheet(
-    //Viewmodel: ,
+   // viewModel: TaskEntryViewModel,
     sheetScaffoldState: BottomSheetScaffoldState,
     onCancel: () -> Unit,
     onSubmit: () -> Unit,
@@ -65,8 +71,8 @@ fun AddTaskBottomSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    //val task by juiceTrackerViewModel.currentJuiceStream.collectAsState() // erstat med rigtig viewModel
-  
+   // val task by viewModel.get.collectAsState() // erstat med rigtig viewModel
+
    BottomSheetScaffold(
        modifier = modifier,
        scaffoldState = sheetScaffoldState,
@@ -74,11 +80,14 @@ fun AddTaskBottomSheet(
            BottomSheetContent(
                task = Task(title = "Boobs", difficulty = 5, frequency = Frequency.Weekly, streak = 5, category = Categories.Health, isDone = false),
                onCancel = onCancel, 
-               onSubmit = onSubmit
+               onSubmit = onSubmit,
+               modifier = modifier
            )
        }
    ) {
-       content()}
+       content()
+   }
+
 }
 
 @Composable
@@ -87,6 +96,7 @@ fun BottomSheetContent(
     onCancel: () -> Unit,
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier,
+
 ) {
     Column {
         TaskSheetHeader(headerTitle = "Add a task")
@@ -97,7 +107,10 @@ fun BottomSheetContent(
             onSubmit = onSubmit,
             submitButtonLabel = stringResource(R.string.add_task)
         )
+        
+        Spacer(modifier = modifier.fillMaxHeight(0.2f))// Gives the spacer, enough height to clear bottom bar
     }
+    
 }
 
 
@@ -121,8 +134,8 @@ fun TaskSheetHeader(modifier: Modifier = Modifier, headerTitle: String) {
  */
 @Composable
 fun TaskInputForm(
-    //taskUiState
-    task: Task,
+    taskUiState: TaskUiState? = null,
+    task: Task? = null,
     onDismiss: () -> Unit,
     dismissButtonLabel: String,
     onSubmit: () -> Unit,
@@ -132,24 +145,22 @@ fun TaskInputForm(
     Column (modifier.padding(dimensionResource(R.dimen.padding_small))) {
         TextInputRow(
             inputLabel = stringResource(R.string.title),
-            fieldValue = task.title,
-            onValueChange = { TODO() }//viewmodel Logik
-        )
-        DropdownInputRow(
-            inputLabel = stringResource(R.string.category),
-            fieldValue = task.category,
+            fieldValue = task?.title ?: "",
             onValueChange = { TODO() }//viewmodel Logik
         )
 
-        DropdownInputRow(
-            inputLabel = stringResource(R.string.frequency),
-            fieldValue = task.frequency ,
-            onValueChange = { TODO() }//viewmodel Logik
+        DropdownInputRow<Categories>(
+            inputLabel = stringResource(R.string.category)
         )
+
+        DropdownInputRow<Frequency>(
+            inputLabel = stringResource(R.string.frequency)
+        )
+
 
         SliderInputRow(
             inputLabel = stringResource(R.string.difficulty),
-            value = task.difficulty,
+            value = task?.difficulty ?: 0,
             onValueChange = { TODO() },//view modelLogik
             minValue = 1,
             maxValue = 10
@@ -179,7 +190,7 @@ fun TextInputRow(
 
     InputRow(inputLabel = inputLabel, modifier = modifier ) {
         TextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             value = fieldValue,
             onValueChange = onValueChange,
             singleLine = true,
@@ -193,29 +204,56 @@ fun TextInputRow(
 /**
  * Dropdown Input Row for task Category and Frequency that are enums.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropdownInputRow(
+inline fun <reified T : Enum<T>> DropdownInputRow(
     inputLabel: String,
-    fieldValue: Enum<*>,
-    onValueChange: (Enum<*>) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val optionsArray = enumValues<T>().map { option ->
+        option.name
+    }
+
+    var selectedText by remember {
+        mutableStateOf(optionsArray[0])
+    }
+
+    var isExpanded by remember {
+        mutableStateOf(false)
+    }
+
     InputRow(inputLabel = inputLabel, modifier = modifier) {
-        DropdownMenu(
-            modifier = Modifier.fillMaxWidth(),
-            expanded = false,
-            onDismissRequest = { /*TODO*/ },
-            content = {
-                fieldValue.javaClass.enumConstants?.forEach { value ->
+        
+        ExposedDropdownMenuBox(
+            expanded = isExpanded,
+            onExpandedChange = { isExpanded = !isExpanded }
+        ) {
+            TextField(
+                modifier = Modifier.menuAnchor(),
+                value = selectedText,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) }
+            )
+            ExposedDropdownMenu(
+                expanded = isExpanded,
+                onDismissRequest = { isExpanded = false }
+            ) {
+                optionsArray.forEachIndexed { index, text ->
+
                     DropdownMenuItem(
-                        text = { value.toString() },
-                        onClick = {onValueChange(value)})
+                        text = { Text(text = text) },
+                        onClick = {
+                            selectedText = optionsArray[index]
+                            isExpanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
                 }
             }
-        )
+        }
     }
 }
-
 /** Slider input row for task Difficulty.
  */
 @Composable
@@ -310,7 +348,7 @@ fun InputRow(
                 .padding(end = dimensionResource(R.dimen.padding_small))
         )
 
-        Box(modifier = Modifier.weight(2f)) {
+        Box(modifier = Modifier.weight(3f)) {
             content()
         }
     }
@@ -332,11 +370,7 @@ fun InputRowPreview() {
 @Composable
 fun DropdownInputRowPreview() {
     MaterialTheme {
-        DropdownInputRow(
-            inputLabel = "Task Frequency",
-            fieldValue = Frequency.Daily,
-            onValueChange = { /* Handle value change */ }
-        )
+
     }
 }
 

@@ -5,6 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface TasksRepository {
 
+    /**
+     * Retrieve ONE task from the data source that matches with the [id].
+     */
+    fun getTask(id: Int): Flow<Task?>
+
     fun getTasks(): Flow<List<Task>>
 
     fun getTaskByFrequencyList(frequency: Frequency): Flow<List<Task>>
