@@ -1,11 +1,12 @@
 package com.example.mini_project.ui.screens.home
 
-import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -73,7 +74,6 @@ object HomeRoute : NavRouteHandler {
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     navController: NavHostController,
@@ -230,6 +230,7 @@ private fun TaskList(
     ) {
         content.second.forEach { task ->
             if ( !task.isDone) {
+                Log.e(null, task.id.toString())
                 TaskRow(
                     viewModel = viewModel,
                     task = task,
@@ -249,7 +250,7 @@ fun TaskRow(
     task: Task,
     modifier: Modifier = Modifier
 ) {
-
+    Log.e(null, "TaskRow ${task.id.toString()}")
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(

@@ -16,8 +16,13 @@ class TaskDetailsViewModel(
      */
 
 
+
     private val taskId: Int = checkNotNull(savedStateHandle[TaskDetailsRoute.taskIdArgument])
 
+
+}
+
+suspend fun updateTask() {
 
 }
 

@@ -1,41 +1,17 @@
 package com.example.mini_project.ui.screens.home
 
-import androidx.compose.material.BottomSheetScaffoldState
-import androidx.compose.material.BottomSheetState
-import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberStandardBottomSheetState
-import android.util.Log
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.mini_project.OurApplication
-import com.example.mini_project.data.task.TaskDao
 import androidx.lifecycle.viewModelScope
-import androidx.room.DatabaseConfiguration
-import com.example.mini_project.data.AppContainer
 import com.example.mini_project.data.task.Frequency
-import com.example.mini_project.data.category.Category
-import com.example.mini_project.data.task.Categories
 import com.example.mini_project.data.task.Task
 import com.example.mini_project.data.task.TasksRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
 
 
 /*
@@ -91,34 +67,6 @@ class HomeViewModel(private val tasksRepository: TasksRepository): ViewModel() {
             tasksRepository.insertTask(task)
         }
     }
-
-    /*fun test(): StateFlow<List<Task>> {
-        Log.e("DatabaseStuff", "Test started")
-        //container.__dataBase.clearAllTables()
-        //container.tasksRepository.insertTask(Task(1, "Work", 5, Frequency.Weekly, 4, Categories.Health))
-        val testBadges = container.badgesRepository.getBadgeList()
-        val testCategory = container.categoriesRepository.listOfAllCategoriesSortedByCurrentLevel()
-        return container.tasksRepository.getTaskByFrequencyList().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = listOf()
-        )
-
-    }*/
-
-    /*
-    companion object {
-        val factory:ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as OurApplication)
-                HomeViewModel(application.container)
-            }
-        }
-    }
-   */
-
-
-
 
 }
 

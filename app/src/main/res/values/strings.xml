@@ -19,4 +19,11 @@
     <string name="retry">Retry</string>
     <string name="quote">Quote</string>
     <string name="skip">Skip</string>
+    <string name="hobbies">Hobbies</string>
+    <string name="health">Health</string>
+    <string name="social">Social</string>
+    <string name="frequency_daily">Daily</string>
+    <string name="frequency_weekly">Weekly</string>
+    <string name="frequency_monthly">Monthly</string>
+    <string name="frequency_yearly">Yearly</string>
 </resources>
