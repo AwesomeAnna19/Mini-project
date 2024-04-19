@@ -95,13 +95,11 @@ class HomeViewModel(private val tasksRepository: TasksRepository, private val ca
     fun setFinishTask(task: Task, status: Boolean = true) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Log.d(null, task.category.toString())
                 tasksRepository.updateTask(task.copy(isDone = status, streak = task.streak + 1))
                 val relevantCat = categoryRepository.getCategoryFromName(task.category).first()
-                if (relevantCat == null) {Log.e(null, "Null relevant category: ${task.category}"); return@withContext}
+                if (relevantCat == null) {return@withContext}
                 var newXp = relevantCat.currentXp + task.difficulty
                 if (newXp >= relevantCat.xpRequiredForLevelUp) {
-                    Log.d(null, "Levelled up")
                     newXp -= relevantCat.xpRequiredForLevelUp
                     categoryRepository.updateCategory(
                         relevantCat.copy(
@@ -119,32 +117,6 @@ class HomeViewModel(private val tasksRepository: TasksRepository, private val ca
             tasksRepository.insertTask(task)
         }
     }
-
-    /*fun test(): StateFlow<List<Task>> {
-        Log.e("DatabaseStuff", "Test started")
-        //container.__dataBase.clearAllTables()
-        //container.tasksRepository.insertTask(Task(1, "Work", 5, Frequency.Weekly, 4, Categories.Health))
-        val testBadges = container.badgesRepository.getBadgeList()
-        val testCategory = container.categoriesRepository.listOfAllCategoriesSortedByCurrentLevel()
-        return container.tasksRepository.getTaskByFrequencyList().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = listOf()
-        )
-
-    }*/
-
-    /*
-    companion object {
-        val factory:ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as OurApplication)
-                HomeViewModel(application.container)
-            }
-        }
-    }
-   */
-
 
 
 

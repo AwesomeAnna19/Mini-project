@@ -43,7 +43,6 @@ abstract class OurDatabase : RoomDatabase() {
          * Ensures that only one instance of the database is created and used throughout the application's lifecycle.
          */
         fun getDatabase(context: Context): OurDatabase{
-            Log.e("Database", "GotDataBase")
             // If the Instance is not null, return it, otherwise create new database instance in synchronized block
                     // Synchronized block -> only one thread of execution at a time can enter this block of code
                     // -> makes sure the database only gets initialized once, avoids race condition
@@ -52,30 +51,11 @@ abstract class OurDatabase : RoomDatabase() {
                 // Builds a Room database instance using the input application context and database class
                 // Database name is "app_database". CHANGE IT!
                 Room.databaseBuilder(context, OurDatabase::class.java, "app_database")
-                    .createFromAsset("Database/app_database.db", (testPreCallback()))
+                    .createFromAsset("Database/app_database.db")
                     //.fallbackToDestructiveMigration()
                     .build()  //Creates the database instance
-                    .also { Instance = it; Log.e("Database", "Initialized")}  //Keeps a reference to the recently created db instance.
+                    .also { Instance = it;}  //Keeps a reference to the recently created db instance.
             }
         }
-    }
-}
-
-class testPreCallback() : RoomDatabase.PrepackagedDatabaseCallback() {
-    override fun onOpenPrepackagedDatabase(db: SupportSQLiteDatabase) {
-        super.onOpenPrepackagedDatabase(db)
-
-        Log.e("Database", "DatabaseOpened")
-        Log.e("Database", "path: ${db.path}")
-        Log.e("Database", "Is integrity ok?: ${db.isDatabaseIntegrityOk}")
-
-    }
-
-}
-
-class TestMigration(start : Int, end : Int) : Migration (start, end) {
-
-    override fun migrate(db: SupportSQLiteDatabase) {
-        Log.e("Database", "Used my migration")
     }
 }

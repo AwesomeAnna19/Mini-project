@@ -81,8 +81,6 @@ fun FullScreen(
     val uiState by viewModel.graphUiState.collectAsState()
     val windowUiState by viewModel.graphWindowUIState.collectAsState()
 
-    Log.e(null, "This many tasks in list: ${uiState.taskList.count()}")
-
 
     Scaffold(
         topBar = {
