@@ -11,6 +11,7 @@ import com.example.mini_project.OurApplication
 import com.example.mini_project.ui.screens.GraphScreen.GraphViewModel
 import com.example.mini_project.ui.screens.home.HomeViewModel
 import com.example.mini_project.ui.screens.home.details.TaskDetailsViewModel
+import com.example.mini_project.ui.screens.home.entry.TaskEntryViewModel
 import com.example.mini_project.ui.screens.quote.QuoteViewModel
 import com.example.mini_project.ui.screens.trophy.TrophyViewModel
 
@@ -50,6 +51,10 @@ object AppViewModelProvider {
         // Initializer for QuoteViewModel
         initializer {
             QuoteViewModel(ourApplication().container.quotesRepository)
+        }
+
+        initializer {
+            TaskEntryViewModel(ourApplication().container.tasksRepository)
         }
     }
 }

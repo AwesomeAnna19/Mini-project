@@ -57,7 +57,7 @@ fun TaskDetailsScreen(
     ) { innerPadding ->
 
         TaskInputForm(
-            task = TODO(), //viewmodel.taskUiState,
+            taskUiState = viewModel.taskUiState,
             onDismiss = {
                 //viewModel.deleteTask
                 navigateBack()
@@ -65,7 +65,7 @@ fun TaskDetailsScreen(
             dismissButtonLabel = stringResource(R.string.delete),
             onSubmit = {
                 coroutineScope.launch {
-                    //viewmodel.updateTask()
+                    viewModel.updateTask()
                     navigateBack()
                 }
             },

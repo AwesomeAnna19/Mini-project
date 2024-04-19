@@ -62,7 +62,7 @@ fun AddTaskFAB(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskBottomSheet(
-    //Viewmodel: ,
+   // viewModel: TaskEntryViewModel,
     sheetScaffoldState: BottomSheetScaffoldState,
     onCancel: () -> Unit,
     onSubmit: () -> Unit,
@@ -71,7 +71,7 @@ fun AddTaskBottomSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    //val task by juiceTrackerViewModel.currentJuiceStream.collectAsState() // erstat med rigtig viewModel
+   // val task by viewModel.get.collectAsState() // erstat med rigtig viewModel
 
    BottomSheetScaffold(
        modifier = modifier,
@@ -134,8 +134,8 @@ fun TaskSheetHeader(modifier: Modifier = Modifier, headerTitle: String) {
  */
 @Composable
 fun TaskInputForm(
-    //taskUiState
-    task: Task,
+    taskUiState: TaskUiState? = null,
+    task: Task? = null,
     onDismiss: () -> Unit,
     dismissButtonLabel: String,
     onSubmit: () -> Unit,
@@ -145,7 +145,7 @@ fun TaskInputForm(
     Column (modifier.padding(dimensionResource(R.dimen.padding_small))) {
         TextInputRow(
             inputLabel = stringResource(R.string.title),
-            fieldValue = task.title,
+            fieldValue = task?.title ?: "",
             onValueChange = { TODO() }//viewmodel Logik
         )
 
@@ -160,7 +160,7 @@ fun TaskInputForm(
 
         SliderInputRow(
             inputLabel = stringResource(R.string.difficulty),
-            value = task.difficulty,
+            value = task?.difficulty ?: 0,
             onValueChange = { TODO() },//view modelLogik
             minValue = 1,
             maxValue = 10
@@ -214,7 +214,7 @@ inline fun <reified T : Enum<T>> DropdownInputRow(
         option.name
     }
 
-    var selectedOptionName by remember {
+    var selectedText by remember {
         mutableStateOf(optionsArray[0])
     }
 
@@ -230,7 +230,7 @@ inline fun <reified T : Enum<T>> DropdownInputRow(
         ) {
             TextField(
                 modifier = Modifier.menuAnchor(),
-                value = selectedOptionName,
+                value = selectedText,
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded) }
@@ -244,7 +244,7 @@ inline fun <reified T : Enum<T>> DropdownInputRow(
                     DropdownMenuItem(
                         text = { Text(text = text) },
                         onClick = {
-                            selectedOptionName = optionsArray[index]
+                            selectedText = optionsArray[index]
                             isExpanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
