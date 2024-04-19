@@ -13,9 +13,14 @@ import com.example.mini_project.data.task.TasksRepository
 import com.example.mini_project.ui.screens.home.entry.TaskDetails
 import com.example.mini_project.ui.screens.home.entry.TaskUiState
 import com.example.mini_project.ui.screens.home.entry.toTask
+import com.example.mini_project.ui.screens.home.entry.toTaskDetails
 import com.example.mini_project.ui.screens.home.entry.toTaskUiState
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class TaskDetailsViewModel(
@@ -31,6 +36,23 @@ class TaskDetailsViewModel(
         private set
 
     private val taskId: Int = checkNotNull(savedStateHandle[TaskDetailsRoute.taskIdArgument])
+
+//fra itemdetailsviewmodel
+    val uiState: StateFlow<TaskDetails> =
+        tasksRepository.getTask(taskId)
+            .filterNotNull()
+            .map {
+                it.toTaskDetails()
+            }.stateIn(
+                scope = viewModelScope ,
+                started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+                initialValue = TaskDetails()
+            )
+    companion object {
+        private const val TIMEOUT_MILLIS = 5_000L
+    }
+    ///
+
 
     init {
         viewModelScope.launch {
@@ -52,25 +74,19 @@ class TaskDetailsViewModel(
             TaskUiState(taskDetails = taskDetails,isEntryValid = validateTaskInput(taskDetails))
     }
 
+    suspend fun deleteTask() {
+        tasksRepository.deleteTask(taskUiState.taskDetails.toTask())
+
+    }
+
     suspend fun updateTask() {
         if (validateTaskInput(taskUiState.taskDetails)) {
             tasksRepository.updateTask(taskUiState.taskDetails.toTask())
         }
     }
 
-    suspend fun deleteTask() {
-
-    }
 }
 
 
-
-
-
-
-
-suspend fun updateTask() {
-
-}
 
 
