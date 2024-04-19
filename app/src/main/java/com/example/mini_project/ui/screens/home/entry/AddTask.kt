@@ -62,7 +62,7 @@ fun AddTaskFAB(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskBottomSheet(
-   // viewModel: TaskEntryViewModel,
+    viewModel: TaskEntryViewModel,
     sheetScaffoldState: BottomSheetScaffoldState,
     onCancel: () -> Unit,
     onSubmit: () -> Unit,
@@ -71,14 +71,13 @@ fun AddTaskBottomSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-   // val task by viewModel.get.collectAsState() // erstat med rigtig viewModel
-
    BottomSheetScaffold(
        modifier = modifier,
        scaffoldState = sheetScaffoldState,
        sheetContent = {
            BottomSheetContent(
-               task = Task(title = "Boobs", difficulty = 5, frequency = Frequency.Weekly, streak = 5, category = Categories.Health, isDone = false),
+               taskUiState = viewModel.taskUiState,
+               onTaskValueChange = viewModel::updateUiState,
                onCancel = onCancel, 
                onSubmit = onSubmit,
                modifier = modifier
@@ -92,7 +91,8 @@ fun AddTaskBottomSheet(
 
 @Composable
 fun BottomSheetContent(
-    task: Task,
+    taskUiState: TaskUiState,
+    onTaskValueChange: (TaskDetails) -> Unit,
     onCancel: () -> Unit,
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier,
@@ -101,9 +101,11 @@ fun BottomSheetContent(
     Column {
         TaskSheetHeader(headerTitle = "Add a task")
         TaskInputForm(
-            task = task,
+            taskDetails = taskUiState.taskDetails,
+            onValueChange = onTaskValueChange,
             onDismiss = onCancel,
             dismissButtonLabel = stringResource(R.string.cancel),
+            isSubmitButtonEnabled = taskUiState.isEntryValid,
             onSubmit = onSubmit,
             submitButtonLabel = stringResource(R.string.add_task)
         )
@@ -134,10 +136,11 @@ fun TaskSheetHeader(modifier: Modifier = Modifier, headerTitle: String) {
  */
 @Composable
 fun TaskInputForm(
-    taskUiState: TaskUiState? = null,
-    task: Task? = null,
+    taskDetails: TaskDetails,
+    onValueChange: (TaskDetails) -> Unit ={},
     onDismiss: () -> Unit,
     dismissButtonLabel: String,
+    isSubmitButtonEnabled: Boolean,
     onSubmit: () -> Unit,
     submitButtonLabel: String,
     modifier: Modifier = Modifier
@@ -145,8 +148,8 @@ fun TaskInputForm(
     Column (modifier.padding(dimensionResource(R.dimen.padding_small))) {
         TextInputRow(
             inputLabel = stringResource(R.string.title),
-            fieldValue = task?.title ?: "",
-            onValueChange = { TODO() }//viewmodel Logik
+            fieldValue = taskDetails.title,
+            onValueChange = { onValueChange(taskDetails.copy(title = it))}//viewmodel Logik
         )
 
         DropdownInputRow<Categories>(
@@ -160,8 +163,8 @@ fun TaskInputForm(
 
         SliderInputRow(
             inputLabel = stringResource(R.string.difficulty),
-            value = task?.difficulty ?: 0,
-            onValueChange = { TODO() },//view modelLogik
+            value = taskDetails.difficulty,
+            onValueChange = { onValueChange(taskDetails.copy(difficulty = it))},//view modelLogik
             minValue = 1,
             maxValue = 10
         )
@@ -171,7 +174,7 @@ fun TaskInputForm(
             onDismiss = onDismiss,
             dismissButtonLabel = dismissButtonLabel,
             onSubmit = onSubmit,
-            isSubmitButtonEnabled = false, //viewmodel Logik!!!
+            isSubmitButtonEnabled = isSubmitButtonEnabled, //viewmodel Logik!!!
             submitButtonLabel = submitButtonLabel
         )
     }

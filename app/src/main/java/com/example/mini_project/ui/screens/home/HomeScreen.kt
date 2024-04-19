@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -48,6 +47,7 @@ import com.example.mini_project.ui.screens.HabitizeBottomBar
 import com.example.mini_project.ui.screens.HabitizeTopBar
 import com.example.mini_project.ui.screens.home.entry.AddTaskBottomSheet
 import com.example.mini_project.ui.screens.home.entry.AddTaskFAB
+import com.example.mini_project.ui.screens.home.entry.TaskEntryViewModel
 import com.example.mini_project.ui.screens.navItemList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -79,12 +79,14 @@ fun HomeScreen(
     navController: NavHostController,
     navigateToTaskDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    homeViewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    taskEntryViewModel: TaskEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+
 ) {
-    val homeUiState by viewModel.homeUiState.collectAsState()
+    val homeUiState by homeViewModel.homeUiState.collectAsState()
     val coroutineScope = rememberCoroutineScope() //Revisit
 
-    viewModel.InsertTask(myTask)  //Revisit
+    homeViewModel.InsertTask(myTask)  //Revisit
 
 
 //Revisit
@@ -98,7 +100,7 @@ fun HomeScreen(
 //Revisit
     LaunchedEffect (Unit) {
         withContext(Dispatchers.IO) {
-            viewModel.test()
+            homeViewModel.test()
             //bottomSheetScaffoldState.bottomSheetState.hide()
         }
     }
@@ -129,6 +131,7 @@ fun HomeScreen(
         }
     ){ contentPadding ->
         AddTaskBottomSheet(
+            viewModel = taskEntryViewModel,
             sheetScaffoldState = bottomSheetScaffoldState,
             onCancel = {
                 coroutineScope.launch {
@@ -136,15 +139,15 @@ fun HomeScreen(
                 }
             },
             onSubmit = {
-                //viewModel.saveTask
                 coroutineScope.launch {
+                    taskEntryViewModel.saveTask()
                     bottomSheetScaffoldState.bottomSheetState.hide()
                 }
             }
         ) {
             HomeBody(
                 uiState = homeUiState,
-                viewModel = viewModel,
+                viewModel = homeViewModel,
                 onTaskClick = navigateToTaskDetails,
                 modifier = Modifier
                     .padding(contentPadding)
@@ -270,11 +273,11 @@ fun TaskRow(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Text(text = "${task.difficulty}")
+            Text(text = "XP: ${task.difficulty}")
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Text(text = task.frequency.name)
+            Text(text = task.category.name)
         }
     }
 
