@@ -60,7 +60,7 @@ val navItemList = listOf(
 @Composable
 fun HabitizeBottomBar(
     navItemList: List<NavItem>,
-    navController: NavHostController, //Aner ikke om det her er okay
+    navController: NavHostController, //Aner ikke om det her er okay ,
     modifier: Modifier = Modifier
 ) {
 
